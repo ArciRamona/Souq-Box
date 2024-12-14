@@ -1,0 +1,100 @@
+//setting up the environments of this web application
+
+//npm init initialization (edit what you want to include etc. name of author)
+//main entry files is the app.js
+//npm i express dotenv mongoose --save
+//npm i nodemon --save-dev (I will use nodemon in development not in production) (change the scripts in package.json to "start": "node backend/app.js")
+/                                                                 //"dev": "NODE_ENV=DEVELOPMENT nodemon backend/app.js"
+                                                                  //"prod": "NODE_ENV=PRODUCTION nodemon backend/app.js"
+                                                                  
+//Benefit for using nodemon we dont have to start it again and again.
+
+//Then creating my routes
+
+
+
+
+// We will set up the POSTMAN, we will connect to DATABASE and we will write our first ROUTE or first
+
+// API endpoint and then we will start working on our products resource.
+
+
+// WHAT IS "_LOCAL_URI=mongodb://127.0.0.1:27017/"?
+
+// The DB_LOCAL_URI=mongodb://127.0.0.1:27017/soukboxit is a configuration setting for a local MongoDB database connection. Let's break it down:
+
+// 1.
+// DB_LOCAL_URI: This is the name of the environment variable. It suggests that this URI is for a local database connection.
+// 2.
+// mongodb://: This is the protocol identifier for MongoDB connections.
+// 3.
+// 127.0.0.1: This is the IP address for localhost, meaning the database is running on the same machine as your application.
+// 4.
+// 27017: This is the default port number that MongoDB uses.
+// 5.
+// /soukboxit: This is the name of the specific database you're connecting to within your MongoDB instance.
+
+// So, mongodb://127.0.0.1:27017/ refers to a MongoDB instance running on your local machine at the default port. The /soukboxit at the end specifies which database to use within that MongoDB instance.
+
+// This URI is typically used for development purposes when you're running MongoDB locally on your machine. For production environments, you would usually use a different URI that points to your production database server.
+
+// ==============================================*/
+
+// chatGPT
+
+// gladysando@Gladyss-MacBook-Air SoukBoxIT % netstat -tlnp | grep 27017
+// netstat: option requires an argument -- p
+// Usage:  netstat [-AaLlnW] [-f address_family | -p protocol]
+//         netstat [-gilns] [-f address_family]
+//         netstat -i | -I interface [-w wait] [-abdgRtS]
+//         netstat -s [-s] [-f address_family | -p protocol] [-w wait]
+//         netstat -i | -I interface -s [-f address_family | -p protocol]
+//         netstat -m [-m]
+//         netstat -r [-Aaln] [-f address_family]
+//         netstat -rs [-s]
+
+// The netstat command you attempted is using Linux-specific options (-p for processes) that are not available on macOS. On macOS, you can use a slightly different approach to check if MongoDB is running and listening on port 27017.
+
+// Here’s how to do it on macOS:
+
+// 1. List Open Ports
+
+// To check if MongoDB is listening on port 27017, use:
+
+// lsof -i :27017
+
+// 	•	If MongoDB is running, you’ll see the process bound to 127.0.0.1:27017 or ::1:27017.
+
+// 2. Check All Listening Ports
+
+// If lsof doesn’t show anything, you can check all active network connections and listening ports:
+
+// netstat -an | grep 27017
+
+// 	•	Look for lines showing LISTEN on 127.0.0.1.27017 or similar.
+
+// 3. Check MongoDB Logs
+
+// If you’re unsure whether MongoDB started successfully, inspect the logs:
+
+// cat /usr/local/var/log/mongodb/mongo.log
+
+// If you installed MongoDB via Homebrew, this is typically where the logs are stored.
+
+// 4. Start MongoDB
+
+// If the MongoDB server is not running, start it using Homebrew:
+
+// brew services start mongodb-community
+
+// 5. Diagnose Issues
+
+// If you’re still having trouble, check for the following:
+// 	•	Configuration File: Inspect /usr/local/etc/mongod.conf to ensure MongoDB is configured to listen on 127.0.0.1.
+// 	•	Permissions: Ensure the MongoDB data directory has the correct permissions:
+
+// sudo chown -R $(whoami) /usr/local/var/mongodb
+
+// Let me know if you encounter further issues!
+
+// ==============================================*/
