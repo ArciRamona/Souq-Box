@@ -13,6 +13,9 @@ dotenv.config({ path: "backend/config/config.env" });
 connectDatabase();
 // =================================================
 
+// Middlewares
+app.use(express.json()); // express.json connected from postman
+
 // =================================================
 //Import all routes
 import productRoutes from "./routes/products.js";

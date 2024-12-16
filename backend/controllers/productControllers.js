@@ -3,8 +3,10 @@ import Product from "../models/products.js";
 
 //Create a new product => /api/v1/products
 export const getProducts = async (req, res) => {
+  const products = await Product.find();
+
   res.status(200).json({
-    message: "All Products",
+    products,
   });
 };
 
