@@ -27,7 +27,7 @@ export const getProductDetails = async (req, res, next) => {
   const product = await Product.findById(req?.params?.id); //Optional Chaining Operator
 
   if (!product) {
-    return next(new ErrorHandler()); //Next is a middleware that is provided by Express
+    return next(new ErrorHandler("Product not found, 400")); //Next is a middleware that is provided by Express
     // return res.status(404).json({
     //   error: "Product not found",
     // });
