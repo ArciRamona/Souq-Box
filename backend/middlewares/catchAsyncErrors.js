@@ -1,5 +1,6 @@
 //Global error handlers that is going to be catch async errors.
 
+//catchAsyncErrors.js = use async errors handlers that will catch all the errors and return some responce
 export default (controllerFunction) => (req, res, next) =>
   Promise.resolve(controllerFunction(req, res, next).catch(next));
 {
