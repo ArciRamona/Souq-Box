@@ -21,6 +21,30 @@ class APIFilters {
     this.query = this.query.find({ ...keyword });
     return this;
   }
+
+  //Filters products
+
+  filters() {
+    const queryCopy = { ...this.queryStr };
+
+    // Fields to remove
+    const fieldsToRemove = ["keyword"];
+    fieldsToRemove.forEach((el) => delete queryCopy[el]);
+    // console.log("=======================");
+    // console.log(queryCopy);
+    // console.log("=======================");
+
+    //Advance filter for price, ratings etc.
+    let queryStr = JSON.stringify(queryCopy);
+    queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`);
+
+    console.log("=======================");
+    console.log(queryStr);
+    console.log("=======================");
+
+    this.query = this.query.find(JSON.parse(queryStr));
+    return this;
+  }
 }
 
 export default APIFilters;
