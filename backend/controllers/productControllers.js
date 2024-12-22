@@ -9,15 +9,20 @@ import ErrorHandler from "../utils/errorHandlers.js";
 export const getProducts = catchAsyncErrors(async (req, res) => {
   //catchAsyncErrors = use async errors handlers that will catch all the errors and return some responce
 
+  const resPerPage = 4;
   //Here we are using APIFilters to filter and sort the products.
   const apiFilters = new APIFilters(Product, req.query).search().filters();
 
   let products = await apiFilters.query;
   let filteredProductsCount = products.length;
 
+  apiFilters.pagination(resPerPage);
+  products = await apiFilters.query.clone();
+
   // const products = await Product.find();
 
   res.status(200).json({
+    resPerPage,
     filteredProductsCount,
     products,
   });
