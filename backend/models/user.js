@@ -2,6 +2,7 @@
 
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema(
   {
@@ -45,4 +46,11 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 15); //npm i bycryptjs --save
 });
 
+//Generate JSON Web Token   //npm i jsonwebtoken --save
+//Return JWT object
+userSchema.methods.getJwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_SECRET_EXPIRATION,
+  });
+};
 export default mongoose.model("User", userSchema);
