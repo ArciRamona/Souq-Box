@@ -53,7 +53,7 @@ userSchema.methods.getJwtToken = function () {
     expiresIn: process.env.JWT_SECRET_EXPIRATION,
   });
 };
-
+//Login User & Asign Password
 //Compare user password
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
