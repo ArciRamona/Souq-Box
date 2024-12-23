@@ -1,6 +1,7 @@
 //Creating User Model
 
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,5 +35,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+//Encrypting password before saving the user
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  this.password = await bcrypt.hash(this.password, 15); //npm i bycryptjs --save
+});
 
 export default mongoose.model("User", userSchema);

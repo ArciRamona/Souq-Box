@@ -34,13 +34,16 @@ app.use(express.json()); // express.json connected from postman
 // =================================================
 //Import all routes
 import productRoutes from "./routes/products.js";
+import authRoutes from "./routes/auth.js";
 
 app.use("/api/v1", productRoutes);
+app.use("/api/v1", authRoutes);
 // =================================================
 
 // =================================================
 //Using Error middleware
 app.use(errorMiddleware);
+
 // =================================================
 
 // =================================================
