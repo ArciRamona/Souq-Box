@@ -22,3 +22,19 @@ export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
 
   next();
 });
+
+//Authorize User Roles and Permissions
+// Authorized User Roles
+export const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ErrorHandler(
+          `Role (${req.user.role}) is not allowed to acess this resource`,
+          403
+        )
+      ); //I change the email on mongoDB compass from "user" to "admin" I mean my own email
+    }
+    next();
+  };
+};
