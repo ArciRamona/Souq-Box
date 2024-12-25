@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 // Check if user is authenticated or not
 export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies; //npm i cookieparser --save
+  const { token } = req.cookies; //npm i cookieparser --save§
 
   if (!token) {
     return next(new ErrorHandler("Login first to access this resource", 404));
