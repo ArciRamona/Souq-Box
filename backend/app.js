@@ -3,6 +3,7 @@
 import express from "express";
 const app = express(); // to register our routes and listen on some port.
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import { connectDatabase } from "./config/dbConnect.js";
 import errorMiddleware from "./middlewares/errors.js";
 
@@ -27,7 +28,8 @@ connectDatabase();
 
 // =================================================
 // Middlewares
-app.use(express.json()); // express.json connected from postman
+app.use(express.json());
+app.use(cookieParser()); // express.json connected from postman
 
 // =================================================
 

@@ -13,6 +13,8 @@ export const getProducts = catchAsyncErrors(async (req, res) => {
   //Here we are using APIFilters to filter and sort the products.
   const apiFilters = new APIFilters(Product, req.query).search().filters();
 
+  console.log("req?.user", req?.user);
+
   let products = await apiFilters.query;
   let filteredProductsCount = products.length;
 
