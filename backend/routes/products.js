@@ -12,12 +12,18 @@ import { authorizeRoles, isAuthenticatedUser } from "../middlewares/auth.js";
 
 const router = express.Router();
 
+router.route("/products").get(getProducts);
+
+//Authorized the routes for the admin
 router
-  .route("/products")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getProducts);
-router.route("/admin/products").post(newProduct); //Authorized only for admin
+  .route("/admin/products")
+  .post(isAuthenticatedUser, authorizeRoles("admin"), newProduct); //Authorized only for admin
 
 router.route("/products/:id").get(getProductDetails);
-router.route("/admin/products/:id").put(updateProduct); //Authorized only for admin
-router.route("/admin/products/:id").delete(deleteProduct); //Authorized only for admin
+router
+  .route("/admin/products/:id")
+  .put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct); //Authorized only for admin
+router
+  .route("/admin/products/:id")
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); //Authorized only for admin
 export default router;
