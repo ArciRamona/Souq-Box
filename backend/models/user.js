@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const userSchema = new mongoose.Schema(
   {
@@ -69,6 +70,8 @@ userSchema.methods.getResetPasswordToken = async function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
+
+  // Set expiration time to 10 minutes from now
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; //10 minutes
 
   await this.save({ validateBeforeSave: false });
