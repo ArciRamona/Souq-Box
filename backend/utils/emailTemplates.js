@@ -572,3 +572,5 @@ export const getResetPasswordTemplate = (username, resetUrl) => `
 </html>
 
 `;
+
+export default getResetPasswordTemplate;

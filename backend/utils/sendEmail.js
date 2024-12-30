@@ -4,7 +4,7 @@
 import nodemailer from "nodemailer";
 
 // Function to send emails
-const sendEmail = async (option) => {
+const sendEmail = async (options) => {
   const transport = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
@@ -16,10 +16,10 @@ const sendEmail = async (option) => {
 
   // Create a message object for sending email.
   const message = {
-    from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_email}>`,
-    to: option.email,
-    subject: option.subject,
-    html: option.message,
+    from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,
+    to: options.email,
+    subject: options.subject,
+    html: options.message,
   };
   // It will send the message to the user email address
   await transport.sendMail(message);
