@@ -61,7 +61,7 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
 };
 
 //Generate user password reset token
-userSchema.methods.getResetPasswordToken = async function () {
+userSchema.methods.getResetPasswordToken = function () {
   // Generate token
   const resetToken = crypto.randomBytes(20).toString("hex");
 
@@ -73,8 +73,6 @@ userSchema.methods.getResetPasswordToken = async function () {
 
   // Set expiration time to 10 minutes from now
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; //10 minutes
-
-  await this.save({ validateBeforeSave: false });
 
   return resetToken;
 };
