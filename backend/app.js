@@ -29,7 +29,8 @@ connectDatabase();
 // =================================================
 // Middlewares
 app.use(express.json());
-app.use(cookieParser()); // express.json connected from postman
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true })); // express.json connected from postman
 
 // =================================================
 

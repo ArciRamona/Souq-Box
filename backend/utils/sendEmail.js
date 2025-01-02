@@ -1,3 +1,4 @@
+// Send Password Recovery Message to the user account
 // Configure Nodemailer & Reset Password
 // npm install nodemailer --save
 
