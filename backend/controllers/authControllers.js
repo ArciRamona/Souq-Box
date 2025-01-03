@@ -154,3 +154,25 @@ export const getUserProfile = catchAsyncErrors(async (req, res, next) => {
     user,
   });
 });
+
+// Change User / Update Password => /aipi/v1/password/update
+export const updatePassword = catchAsyncErrors(async (req, res, next) => {
+  // Find user in the database with password field included
+  const user = await User.findById(req.user._id).select("+password");
+
+  // Check if the user exists
+  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
+  // Check if entered current password is correct
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler("Current password is incorrect", 401));
+  }
+
+  // Update password
+  user.password = req.body.Password;
+
+  user.save();
+
+  res.status(200).json({
+    success: true,
+  });
+});
