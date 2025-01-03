@@ -144,3 +144,13 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
+
+// Get user Profile - Get current user profile => /aipi/v1/me
+
+export const getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  res.status(200).json({
+    user,
+  });
+});
