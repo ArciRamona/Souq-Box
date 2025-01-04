@@ -8,10 +8,12 @@ import {
   getUserProfile,
   updatePassword,
   updateUserProfile,
+  allUsers,
+  getUserDetails,
 } from "../controllers/authControllers.js";
 const router = express.Router();
 
-import { isAuthenticatedUser } from "../middlewares/auth.js";
+import { authorizeRoles, isAuthenticatedUser } from "../middlewares/auth.js";
 
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
@@ -24,5 +26,14 @@ router.route("/password/reset/:token").put(resetPassword);
 router.route("/me").get(isAuthenticatedUser, getUserProfile);
 router.route("/me/update").put(isAuthenticatedUser, updateUserProfile);
 router.route("/password/update").put(isAuthenticatedUser, updatePassword);
+
+// will create admin routes to get all users and get specific user and then update and delete user
+router
+  .route("/admin/users")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), allUsers);
+
+router
+  .route("/admin/users/:id")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getUserDetails);
 
 export default router;

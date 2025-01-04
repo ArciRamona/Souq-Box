@@ -177,7 +177,7 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// User Update Profile = /api/v1/me/update
+//  Update User Profile = /api/v1/me/update
 export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
@@ -187,6 +187,31 @@ export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.user._id, newUserData, {
     new: true,
   });
+
+  res.status(200).json({
+    user,
+  });
+});
+
+// will create admin routes to get all users and get specific user and then update and delete user
+// Get all users - ADMIN => /api/v1/admin/users
+export const allUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    users,
+  });
+});
+
+// Get User Details - ADMIN => /api/v1/admin/users/:id
+export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorHandler(`User not found with id: ${req.params.id}`, 404)
+    );
+  }
 
   res.status(200).json({
     user,
