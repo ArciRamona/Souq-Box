@@ -7,6 +7,7 @@ import {
   resetPassword,
   getUserProfile,
   updatePassword,
+  updateUserProfile,
 } from "../controllers/authControllers.js";
 const router = express.Router();
 
@@ -21,5 +22,7 @@ router.route("/password/reset/:token").put(resetPassword);
 
 // Get user Profile - Get current user profile => /api/v1/me
 router.route("/me").get(isAuthenticatedUser, getUserProfile);
+router.route("/me/update").put(isAuthenticatedUser, updateUserProfile);
 router.route("/password/update").put(isAuthenticatedUser, updatePassword);
+
 export default router;

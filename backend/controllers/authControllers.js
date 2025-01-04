@@ -155,7 +155,7 @@ export const getUserProfile = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Change User / Update Password => /aipi/v1/password/update
+// User  Update Password => /aipi/v1/password/update
 export const updatePassword = catchAsyncErrors(async (req, res, next) => {
   // Find user in the database with password field included
   const user = await User.findById(req.user._id).select("+password");
@@ -168,11 +168,27 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
   }
 
   // Update password
-  user.password = req.body.Password;
+  user.password = req.body.password;
 
   user.save();
 
   res.status(200).json({
     success: true,
+  });
+});
+
+// User Update Profile = /api/v1/me/update
+export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  const user = await User.findByIdAndUpdate(req.user._id, newUserData, {
+    new: true,
+  });
+
+  res.status(200).json({
+    user,
   });
 });
