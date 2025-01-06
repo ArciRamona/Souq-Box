@@ -69,7 +69,7 @@ const orderSchema = new mongoose.Schema(
       currency: String,
       created_at: Date,
     },
-    itemPrice: {
+    itemsPrice: {
       type: Number,
       required: true,
     },
