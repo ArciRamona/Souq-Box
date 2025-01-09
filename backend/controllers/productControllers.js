@@ -56,6 +56,8 @@ export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     product,
   });
+  {
+  }
 });
 
 //Update product details => /api/v1/products/:id
