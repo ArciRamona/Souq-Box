@@ -94,10 +94,25 @@ export const updateOrder = catchAsyncErrors(async (req, res, next) => {
     await product.save({ validateBeforeSave: false });
   });
 
-  order.orderStatus = req.body.status;
-  order.deliveredAt = Date.now();
+  order.orderStatus = req.body.status; // orderStatus
+  order.deliveredAt = Date.now(); //
 
   await order.save();
+
+  res.status(200).json({
+    success: true,
+  });
+});
+
+// Delete order => /api/v1/admin/orders/:id
+export const deleteOrder = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order) {
+    return next(new ErrorHandler("No Order found with this ID", 404));
+  }
+
+  await order.deleteOne();
 
   res.status(200).json({
     success: true,
