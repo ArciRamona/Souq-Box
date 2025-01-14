@@ -5,6 +5,8 @@ import Product from "../models/products.js";
 import APIFilters from "../utils/apiFilters.js";
 import ErrorHandler from "../utils/errorHandlers.js";
 
+import mongoose from "mongoose";
+
 //Create a new product => /api/v1/products
 export const getProducts = catchAsyncErrors(async (req, res) => {
   //catchAsyncErrors = use async errors handlers that will catch all the errors and return some responce
@@ -98,5 +100,52 @@ export const deleteProduct = catchAsyncErrors(async (req, res) => {
 
   res.status(200).json({
     product,
+  });
+});
+
+// USER REVIEWS
+
+// Add New / Update Revie
+
+// Create/Update product review => /api/v1/reviews
+export const createProductReview = catchAsyncErrors(async (req, res, next) => {
+  const { rating, comment, productId } = req.body;
+
+  const review = {
+    user: req?.user?._id,
+    rating: Number(rating),
+    comment,
+  };
+
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    return next(new ErrorHandler("Product not found", 404));
+  }
+
+  const isReviewed = product?.reviews?.find(
+    (r) => r.user.toString() === req?.user?._id.toString()
+  );
+
+  if (isReviewed) {
+    product.reviews.forEach((review) => {
+      if (review?.user?.toString() === req?.user?._id.toString()) {
+        review.comment = comment;
+        review.rating = rating;
+      }
+    });
+  } else {
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length;
+  }
+
+  product.ratings =
+    product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    product.reviews.length;
+
+  await product.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    success: true,
   });
 });
