@@ -4,6 +4,8 @@ import express from "express";
 import {
   createProductReview,
   deleteProduct,
+  deleteProductReview,
+  getAllProductReviews,
   getProductDetails,
   getProducts,
   newProduct,
@@ -28,6 +30,13 @@ router
   .route("/admin/products/:id")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct); //Authorized only for admin
 
-router.route("/reviews").put(isAuthenticatedUser, createProductReview);
+router
+  .route("/reviews")
+  .put(isAuthenticatedUser, createProductReview)
+  .get(isAuthenticatedUser, getAllProductReviews);
+
+router
+  .route("/admin/reviews")
+  .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProductReview); //Authorized only for admin
 
 export default router;
