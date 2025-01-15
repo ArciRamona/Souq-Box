@@ -8,8 +8,8 @@ const Header = () => {
         <div className="navbar-brand">
           <a href="/">
           <img  src="/images/SouqBoxITLogo.png" 
-                alt="ShopIT Logo" 
-                style={{ width: '12rem' }} 
+                alt="SouqBoxITLogo" 
+                style={{ width: '10rem' }} 
               />
           </a>
         </div>
