@@ -9,7 +9,7 @@ const Header = () => {
           <a href="/">
           <img  src="/images/SouqBoxITLogo.png" 
                 alt="SouqBoxITLogo" 
-                style={{ width: '10rem' }} 
+                style={{ width: '9rem' }} 
               />
           </a>
         </div>
