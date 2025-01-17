@@ -1,8 +1,14 @@
-import React from 'react'
+import React, {} from 'react'
+import MetaData from './layout/MetaData.jsx'
 
 const Home = () => {
+  // useEffect(() => {
+  //   document.title = "Buy Best Products Online - SouqBox";
+  // }, []);
+
   return (
-   
+   <>
+    <MetaData title={"Buy Best Products Online"} />
       <div className="row">
         <div className="col-12 col-sm-6 col-md-12">
           <h1 id="products_heading" className="text-secondary">Latest Products</h1>
@@ -45,7 +51,7 @@ const Home = () => {
           </section>
         </div>
       </div>
-   
+    </>
   )
 }
 
