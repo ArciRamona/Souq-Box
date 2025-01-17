@@ -98,3 +98,7 @@
 // Let me know if you encounter further issues!
 
 // ==============================================*/
+
+
+//App. js: This file serves as the entry point for your React application and acts as a container for routing and global component initialization.
+ index. js: This file is responsible for rendering the React application and mounting it into the DOM.
