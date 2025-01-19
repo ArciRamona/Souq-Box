@@ -1,3 +1,5 @@
+// Create Redux toolkit Store
+
 import { configureStore } from "@reduxjs/toolkit";
 import { productApi } from "./api/productsApi";
 

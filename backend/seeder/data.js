@@ -3,6 +3,31 @@
 
 export default [
   {
+    name: "HTVRONT Automatic Heat Press for T Shirts 38 x 38 cm Smart T-Shirt Press with Auto Release Professional Heat Press for Sublimation Vinyl Heat Transfer Projects",
+    price: 45.89,
+    description:
+      "Auto Press & Free Hands - HTVRONT auto heat press machine aims to take away the struggles of a regular heat press. After loading your project onto the shirt press machine, all you have to do is gently push the ironing board inside and press the R button to start. The heatpress will automatically press down and auto-adjusts to your project's thickness up to 1, and it auto releases once the timer goes down. Super easy to use and no more burned projects when you're away awhile!.",
+    ratings: 4.5,
+    images: [
+      {
+        public_id: "shopit/products/demo/u0u5mx7ofp8drzi5yjjt",
+        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1689961646/shopit/products/demo/u0u5mx7ofp8drzi5yjjt.jpg",
+      },
+      {
+        public_id: "shopit/products/demo/g3d7h76n7bdibwfgdrmf",
+        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1689961649/shopit/products/demo/g3d7h76n7bdibwfgdrmf.jpg",
+      },
+      {
+        public_id: "shopit/products/demo/odfmkygdxwwn8i6crteq",
+        url: "http://res.cloudinary.com/udemy-courses/image/upload/v1689961652/shopit/products/demo/odfmkygdxwwn8i6crteq.jpg",
+      },
+    ],
+    category: "Electronics",
+    seller: "Ebay",
+    stock: 50,
+    numOfReviews: 32,
+  },
+  {
     name: "SanDisk Ultra 128GB SDXC UHS-I Memory Card up to 80MB/s",
     price: 45.89,
     description:
