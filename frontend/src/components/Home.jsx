@@ -2,6 +2,7 @@ import React from "react";
 import MetaData from "./layout/MetaData.jsx";
 import { useGetProductsQuery } from "../redux/api/productsApi.js";
 import ProductItem from "./product/ProductItem.jsx";
+import Loader from "./layout/Loader.jsx";
 
 const Home = () => {
   // useEffect(() => {
@@ -11,9 +12,7 @@ const Home = () => {
   // get products data, Fetch & Render Products for Redux State
   const { data, isLoading } = useGetProductsQuery();
 
-  console.log(isLoading);
-
-  console.log(data);
+  if (isLoading) return <Loader />;
 
   return (
     <>

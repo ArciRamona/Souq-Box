@@ -1,3 +1,5 @@
+// Loader Component & Cache Behavior
+
 import React from "react";
 
 const Loader = () => {

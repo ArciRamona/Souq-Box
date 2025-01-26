@@ -9,6 +9,7 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
   }),
+  keepUnusedDataFor: 30,
 
   // Define all the endpoints here.
   // Endpoint to get all products. Here we will use redux-toolkit query.
