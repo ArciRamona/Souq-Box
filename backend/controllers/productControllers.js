@@ -8,17 +8,17 @@ import ErrorHandler from "../utils/errorHandlers.js";
 import mongoose from "mongoose";
 
 //Create a new product => /api/v1/products
-export const getProducts = catchAsyncErrors(async (req, res) => {
+export const getProducts = catchAsyncErrors(async (req, res, next) => {
   //catchAsyncErrors = use async errors handlers that will catch all the errors and return some responce
 
   const resPerPage = 4;
   //Here we are using APIFilters to filter and sort the products.
   const apiFilters = new APIFilters(Product, req.query).search().filters();
 
-  console.log("req?.user", req?.user);
-
   let products = await apiFilters.query;
   let filteredProductsCount = products.length;
+
+  return next(new ErrorHandler("Hello", 400));
 
   apiFilters.pagination(resPerPage);
   products = await apiFilters.query.clone();

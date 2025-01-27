@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MetaData from "./layout/MetaData.jsx";
 import { useGetProductsQuery } from "../redux/api/productsApi.js";
 import ProductItem from "./product/ProductItem.jsx";
 import Loader from "./layout/Loader.jsx";
+import toast from "react-hot-toast";
 
 const Home = () => {
-  // useEffect(() => {
-  //   document.title = "Buy Best Products Online - SouqBox";
-  // }, []);
+  // Fetch products data
+  const { data, isLoading, error, isError } = useGetProductsQuery();
 
-  // get products data, Fetch & Render Products for Redux State
-  const { data, isLoading } = useGetProductsQuery();
+  useEffect(() => {
+    if (isError) {
+      // Make sure error contains the expected error message structure
+      toast.error(error?.data?.message || "An unexpected error occurred");
+    }
+  }, [isError, error]);
 
   if (isLoading) return <Loader />;
 
@@ -24,11 +28,15 @@ const Home = () => {
           </h1>
 
           <section id="products" className="mt-5">
-            <div className="row">
-              {data?.products?.map((product) => (
-                <ProductItem product={product} />
-              ))}
-            </div>
+            {data?.products?.length > 0 ? (
+              <div className="row">
+                {data.products.map((product) => (
+                  <ProductItem key={product._id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <p>No products available at the moment</p>
+            )}
           </section>
         </div>
       </div>

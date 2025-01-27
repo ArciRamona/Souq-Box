@@ -1,6 +1,7 @@
 // main entry files
 
 import express from "express";
+import cors from "cors"; // Import CORS if your frontend and backend are on different domains
 const app = express(); // to register our routes and listen on some port.
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -29,6 +30,8 @@ connectDatabase();
 // =================================================
 // Middlewares
 app.use(express.json());
+// Enable CORS (Cross-Origin Resource Sharing) for development if needed
+app.use(cors());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true })); // express.json connected from postman
 
@@ -44,12 +47,17 @@ app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", orderRoutes);
 // =================================================
+// Use your product routes here
 
-// =================================================
-//Using Error middleware
-app.use(errorMiddleware);
-
-// =================================================
+// Global error handler middleware (must be placed after all routes)
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(statusCode).json({
+    success: false,
+    message,
+  });
+});
 
 // =================================================
 //App listining to process env PORT
@@ -69,3 +77,11 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
+
+// =================================================
+
+// Error Handler (should always be the last middleware)
+//Using Error middleware
+app.use(errorMiddleware);
+
+// =================================================

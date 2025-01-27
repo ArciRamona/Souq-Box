@@ -5,22 +5,32 @@ import ErrorHandler from "../utils/errorHandlers.js";
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 
-// Check if user is authenticated or not
+// Check if the user is authenticated
 export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
-  const { token } = req.cookies; //npm i cookieparser --save§
+  // Ensure you have `cookie-parser` middleware setup in your app
+  const { token } = req.cookies;
 
   if (!token) {
-    return next(new ErrorHandler("Login first to access this resource", 404));
+    return next(new ErrorHandler("Login first to access this resource", 401)); // 401 for unauthorized
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  req.user = await User.findById(decoded.id);
+  try {
+    // Verify token and get the decoded user ID
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  //   if (!req.user) {
-  //     return next(new ErrorHandler("User not found", 404));
-  //   }
+    // Fetch the user details from the database
+    req.user = await User.findById(decoded.id);
 
-  next();
+    if (!req.user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    next();
+  } catch (error) {
+    return next(
+      new ErrorHandler("Invalid or expired token, please login again", 401)
+    );
+  }
 });
 
 //Authorize User Roles and Permissions
