@@ -15,10 +15,12 @@ export const getProducts = catchAsyncErrors(async (req, res, next) => {
   //Here we are using APIFilters to filter and sort the products.
   const apiFilters = new APIFilters(Product, req.query).search().filters();
 
+  // console.log("req?.user", req?.user);
+
   let products = await apiFilters.query;
   let filteredProductsCount = products.length;
 
-  return next(new ErrorHandler("Hello", 400));
+  // return next(new ErrorHandler("error", 400));
 
   apiFilters.pagination(resPerPage);
   products = await apiFilters.query.clone();

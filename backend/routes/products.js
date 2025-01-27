@@ -15,7 +15,7 @@ import { authorizeRoles, isAuthenticatedUser } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.route("/products").get(isAuthenticatedUser, getProducts);
+router.route("/products").get(getProducts);
 
 //Authorized the routes for the admin
 router

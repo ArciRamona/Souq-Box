@@ -49,16 +49,6 @@ app.use("/api/v1", orderRoutes);
 // =================================================
 // Use your product routes here
 
-// Global error handler middleware (must be placed after all routes)
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  res.status(statusCode).json({
-    success: false,
-    message,
-  });
-});
-
 // =================================================
 //App listining to process env PORT
 const server = app.listen(process.env.PORT, () => {

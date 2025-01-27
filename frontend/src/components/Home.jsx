@@ -14,7 +14,7 @@ const Home = () => {
       // Make sure error contains the expected error message structure
       toast.error(error?.data?.message || "An unexpected error occurred");
     }
-  }, [isError, error]);
+  }, [error, isError]);
 
   if (isLoading) return <Loader />;
 

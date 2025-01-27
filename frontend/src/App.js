@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Toaster position="top-center" />
+        <Toaster position="top-center" reverseOrder={false} />
         <Header />
         <div className="container">
           <Routes>
