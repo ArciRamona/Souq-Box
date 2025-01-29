@@ -9,6 +9,8 @@ const Home = () => {
   // Fetch products data
   const { data, isLoading, error, isError } = useGetProductsQuery();
 
+  //Adding React Hot Toasts
+  // Handle API errors and display a toast notification
   useEffect(() => {
     if (isError) {
       // Make sure error contains the expected error message structure

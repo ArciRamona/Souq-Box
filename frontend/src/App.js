@@ -5,6 +5,7 @@ import "./App.css";
 import Home from "./components/Home.jsx";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProductDetails from "./components/product/ProductDetails.jsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             {/* Add more routes here */}
+            <Route path="/product/:id" element={<ProductDetails />} />
           </Routes>
         </div>
 

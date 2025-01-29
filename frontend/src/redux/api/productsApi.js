@@ -16,13 +16,16 @@ export const productApi = createApi({
   // The query will fetch the data from the server and put it in the Redux store.
 
   endpoints: (builder) => ({
+    // Define the endpoints here.
+    //Endpoint to get all products. Here we will use redux-toolkit query.
     //our endpoint is get products that will get all the products from the back end.
     getProducts: builder.query({
-      query: (params) => ({
-        url: "/products",
-      }),
+      query: (params) => "/products",
+    }),
+    getProductDetails: builder.query({
+      query: (id) => `/products/${id}`,
     }),
   }),
 });
 
-export const { useGetProductsQuery } = productApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
+export const { useGetProductsQuery, useGetProductDetailsQuery } = productApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

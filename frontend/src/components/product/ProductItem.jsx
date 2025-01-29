@@ -34,12 +34,13 @@ const ProductItem = ({ product }) => {
           </div>
           <p className="card-text mt-2">{product.price}</p>
           <Link
-            to={`/product/${product?.id}`}
+            to={`/product/${product?._id}`} // Use _id instead of id
             id="view_btn"
             className="btn btn-block"
           >
             View Details
-          </Link>
+          </Link>{" "}
+          {/* Use _id instead of id instead of */}
         </div>
       </div>
     </div>
