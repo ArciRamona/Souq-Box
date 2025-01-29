@@ -4,10 +4,17 @@ import { useGetProductsQuery } from "../redux/api/productsApi.js";
 import ProductItem from "./product/ProductItem.jsx";
 import Loader from "./layout/Loader.jsx";
 import toast from "react-hot-toast";
+import CustomPagination from "./layout/CustomPagination.jsx";
+import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
+  let [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || 1;
+
+  const params = { page };
+
   // Fetch products data
-  const { data, isLoading, error, isError } = useGetProductsQuery();
+  const { data, isLoading, error, isError } = useGetProductsQuery(params);
 
   //Adding React Hot Toasts
   // Handle API errors and display a toast notification
@@ -19,6 +26,8 @@ const Home = () => {
   }, [error, isError]);
 
   if (isLoading) return <Loader />;
+
+  console.log("API Response Data:", data);
 
   return (
     <>
@@ -40,6 +49,11 @@ const Home = () => {
               <p>No products available at the moment</p>
             )}
           </section>
+
+          <CustomPagination
+            resPerPage={data?.resPerPage}
+            filteredProductsCount={data?.filteredProductsCount}
+          />
         </div>
       </div>
     </>

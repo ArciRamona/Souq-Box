@@ -20,7 +20,12 @@ export const productApi = createApi({
     //Endpoint to get all products. Here we will use redux-toolkit query.
     //our endpoint is get products that will get all the products from the back end.
     getProducts: builder.query({
-      query: (params) => "/products",
+      query: (params) => ({
+        url: "/products",
+        params: {
+          page: params?.page,
+        },
+      }),
     }),
     getProductDetails: builder.query({
       query: (id) => `/products/${id}`,

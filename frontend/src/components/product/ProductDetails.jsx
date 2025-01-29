@@ -19,7 +19,11 @@ const ProductDetails = () => {
   const [activeImg, setActiveImg] = useState("");
 
   useEffect(() => {
-    setActiveImg(product?.images[0] ? product.images[0]?.url : "");
+    setActiveImg(
+      product?.images[0]
+        ? product.images[0]?.url
+        : "/images/default_product.png"
+    );
   }, [product]);
 
   useEffect(() => {
