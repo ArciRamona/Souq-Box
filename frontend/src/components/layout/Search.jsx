@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Search Products Component
 const Search = () => {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Search = () => {
     e.preventDefault();
 
     if (keyword?.trim()) {
-      navigate(`/search?keyword=${keyword}`);
+      navigate(`/?keyword=${keyword}`);
     } else {
       navigate(`/`);
     }
