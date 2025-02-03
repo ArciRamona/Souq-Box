@@ -1,16 +1,52 @@
 // Filter by price only
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getPriceQueryParams } from "../../helpers/helpers";
+import { PRODUCT_CATEGORIES } from "../../constants/constans";
 
 const Filters = () => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
 
+  useEffect(() => {
+    searchParams.has("min") && setMin(searchParams.get("min"));
+    searchParams.has("max") && setMax(searchParams.get("max"));
+  }, []);
+
   const navigate = useNavigate();
   let [searchParams] = useSearchParams();
 
+  // Handle Category & Ratings Filters
+  const handleClick = (checkbox) => {
+    const checkboxes = document.getElementsByName(checkbox.name);
+
+    checkboxes.forEach((item) => {
+      if (item !== checkbox) item.checked = false;
+    });
+    // simply add here checkboxes dot for each checkboxes foreach basic checkbox. I have to add a check. That if item. Or let's call it item. If that item is not equal to the checkbox that we have right in here, then simply. Item dot checked. He is going to be false.
+    if (checkbox.checked === false) {
+      // Delete filter from query
+      if (searchParams.has(checkbox.name)) {
+        searchParams.delete(checkbox.name);
+        const path = window.location.pathname + "?" + searchParams.toString();
+        navigate(path);
+      }
+    } else {
+      // Set new Filter value if already there.
+      if (searchParams.has(checkbox.name)) {
+        searchParams.set(checkbox.name, checkbox.value);
+      } else {
+        // Append New Filter
+        searchParams.append(checkbox.name, checkbox.value);
+      }
+
+      const path = window.location.pathname + "?" + searchParams.toString();
+      navigate(path);
+    }
+  };
+
+  // Handle Price Filters
   const handleButtonClick = (e) => {
     e.preventDefault();
 
@@ -19,6 +55,12 @@ const Filters = () => {
 
     const path = window.location.pathname + "?" + searchParams.toString();
     navigate(path);
+  };
+
+  const defaultCheckHandler = (checkboxType, checkboxValue) => {
+    const value = searchParams.get(checkboxType);
+    if (checkboxValue === value) return true; // otherwise
+    return false;
   };
 
   return (
@@ -58,19 +100,24 @@ const Filters = () => {
       <hr />
       <h5 className="mb-3">Category</h5>
 
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          name="category"
-          id="check4"
-          value="Category 1"
-        />
-        <label className="form-check-label" for="check4">
-          {" "}
-          Category 1{" "}
-        </label>
-      </div>
+      {PRODUCT_CATEGORIES?.map((category) => (
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            name="category"
+            id="check4"
+            value={category}
+            defaultChecked={defaultCheckHandler("category", category)}
+            onClick={(e) => handleClick(e.target)}
+          />
+          <label className="form-check-label" for="check4">
+            {" "}
+            {category}
+          </label>
+        </div>
+      ))}
+
       <div className="form-check">
         <input
           className="form-check-input"
