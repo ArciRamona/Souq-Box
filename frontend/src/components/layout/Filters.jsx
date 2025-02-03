@@ -5,6 +5,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { getPriceQueryParams } from "../../helpers/helpers";
 import { PRODUCT_CATEGORIES } from "../../constants/constans";
 
+import StarRatings from "react-star-ratings";
+
 const Filters = () => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
@@ -12,11 +14,13 @@ const Filters = () => {
   useEffect(() => {
     searchParams.has("min") && setMin(searchParams.get("min"));
     searchParams.has("max") && setMax(searchParams.get("max"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navigate = useNavigate();
   let [searchParams] = useSearchParams();
 
+  // Filter by Ratings
   // Handle Category & Ratings Filters
   const handleClick = (checkbox) => {
     const checkboxes = document.getElementsByName(checkbox.name);
@@ -135,30 +139,31 @@ const Filters = () => {
       <hr />
       <h5 className="mb-3">Ratings</h5>
 
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          name="ratings"
-          id="check7"
-          value="5"
-        />
-        <label className="form-check-label" for="check7">
-          <span className="star-rating">★ ★ ★ ★ ★</span>
-        </label>
-      </div>
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          name="ratings"
-          id="check8"
-          value="4"
-        />
-        <label className="form-check-label" for="check8">
-          <span className="star-rating">★ ★ ★ ★ ☆</span>
-        </label>
-      </div>
+      {[5, 4, 3, 2, 1].map((rating) => (
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            name="ratings"
+            id="check8"
+            value={rating}
+            defaultChecked={defaultCheckHandler("ratings", rating?.toString)}
+            onClick={(e) => handleClick(e.target)}
+          />
+          <label className="form-check-label" for="check7">
+            <StarRatings
+              // From react-star-ratings
+              rating={rating}
+              starRatedColor="#ffb829"
+              numberOfStars={5}
+              name="rating"
+              starDimension="20px"
+              starSpacing="2px"
+              renderStarIcon={() => <i className="fa fa-star star-active"></i>}
+            />
+          </label>
+        </div>
+      ))}
     </div>
   );
 };

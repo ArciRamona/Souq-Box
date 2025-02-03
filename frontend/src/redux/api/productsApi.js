@@ -28,6 +28,7 @@ export const productApi = createApi({
           category: params?.category,
           "price[gte]": params.min,
           "price[lte]": params.max,
+          "ratings[gte]": params?.ratings,
         },
       }),
     }),
