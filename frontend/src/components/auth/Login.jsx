@@ -1,14 +1,31 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
+import { useLoginMutation } from "../../redux/api/authApi";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [login, { isLoading, error, data }] = useLoginMutation();
+
+  console.log(data);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.data?.message);
+    }
+  }, [error]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Email:", email, "Password:", password);
+
+    const loginData = {
+      email,
+      password,
+    };
+    login(loginData);
   };
 
   return (
@@ -49,8 +66,8 @@ const Login = () => {
             Forgot your password?
           </a>
 
-          <button type="submit" className="sign-in-btn">
-            Sign In
+          <button type="submit" className="sign-in-btn" disabled={isLoading}>
+            {isLoading ? "Authenticating..." : "Sign In"}
           </button>
         </form>
 
