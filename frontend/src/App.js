@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import ProductDetails from "./components/product/ProductDetails.jsx";
 import Login from "./components/auth/Login.jsx";
+import RegisterUser from "./components/auth/RegisterUser.jsx";
 
 function App() {
   return (
@@ -23,27 +24,28 @@ function App() {
 
 function MainContent() {
   const location = useLocation(); // Get the current URL path
-  const hideHeaderFooter = location.pathname === "/login"; // Hide Header & Footer on login page
+  const hideHeader =
+    location.pathname === "/login" || location.pathname === "/register"; // Hide Header only on login & register pages
 
   return (
     <div className="App">
       <Toaster position="top-center" reverseOrder={false} />
 
-      {/* Show Header only if not on login page */}
-      {!hideHeaderFooter && <Header />}
+      {/* Show Header only if not on login or register page */}
+      {!hideHeader && <Header />}
 
       <div className="container">
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RegisterUser />} />
         </Routes>
       </div>
 
-      {/* Show Footer only if not on login page */}
-      {!hideHeaderFooter && <Footer />}
+      {/* Footer should always be visible */}
+      <Footer />
     </div>
   );
 }
-
 export default App;

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { useLoginMutation } from "../../redux/api/authApi";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -89,8 +90,14 @@ const Login = () => {
 
         <div className="new-account">
           <p>New to SouqBox?</p>
+
           <button className="create-account-btn">
-            Create your SouqBox account
+            <Link
+              to="/register"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Create your SouqBox account
+            </Link>
           </button>
         </div>
       </div>

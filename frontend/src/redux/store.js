@@ -1,17 +1,12 @@
-// Create Redux toolkit Store
-
 import { configureStore } from "@reduxjs/toolkit";
 import { productApi } from "./api/productsApi";
 import { authApi } from "./api/authApi";
 
-// import rootReducer from './reducers'
-
 export const store = configureStore({
   reducer: {
-    [productApi.reducerPath]: productApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
+    [productApi.reducerPath]: productApi.reducer, // Add product API reducer
+    [authApi.reducerPath]: authApi.reducer, // Add auth API reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, authApi.middleware),
+    getDefaultMiddleware().concat(productApi.middleware, authApi.middleware), // Corrected middleware
 });
-// The store now has redux-thunk added and the Redux DevTools Extension is turned on

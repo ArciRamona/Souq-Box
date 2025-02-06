@@ -1,0 +1,100 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.register-box {
+  width: 350px;
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.logo {
+  width: 120px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.register-btn {
+  width: 100%;
+  background-color: #f90;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.register-btn:hover {
+  background-color: #e68900;
+}
+
+.terms-text {
+  font-size: 12px;
+  color: #555;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.terms-link {
+  color: #0066c0;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.terms-link:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  margin: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.signin-link {
+  font-size: 14px;
+  color: #0066c0;
+  text-decoration: none;
+}
+
+.signin-link a {
+  color: #0066c0;
+  text-decoration: none;
+}
+
+.signin-link a:hover {
+  text-decoration: underline;
+}

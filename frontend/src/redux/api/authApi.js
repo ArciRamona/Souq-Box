@@ -18,6 +18,15 @@ export const authApi = createApi({
     // Define the endpoints here.
     //Endpoint to get all products. Here we will use redux-toolkit query.
     //our endpoint is get products that will get all the products from the back end.
+    register: builder.mutation({
+      query(body) {
+        return {
+          url: "/register",
+          method: "POST",
+          body,
+        };
+      },
+    }),
 
     login: builder.mutation({
       query(body) {
@@ -31,4 +40,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation } = authApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
+export const { useLoginMutation, useRegisterMutation } = authApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
