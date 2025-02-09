@@ -1,7 +1,7 @@
 // Implementing Redux Toolkit
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; //
-
+import { userApi } from "./userApi";
 // Fetch all products Query
 export const authApi = createApi({
   // have to create here product API. In this file we will handle all the endpoints related to the product.
@@ -26,6 +26,15 @@ export const authApi = createApi({
           body,
         };
       },
+      // Load logged in Users State
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          await dispatch(userApi.endpoints.getMe.initiate(null));
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
 
     login: builder.mutation({
@@ -35,6 +44,14 @@ export const authApi = createApi({
           method: "POST",
           body,
         };
+      },
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          await dispatch(userApi.endpoints.getMe.initiate(null));
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
   }),
