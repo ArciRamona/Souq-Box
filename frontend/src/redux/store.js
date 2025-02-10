@@ -1,22 +1,37 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
 import userReducer from "./features/userSlice";
-
 import { productApi } from "./api/productsApi";
 import { authApi } from "./api/authApi";
 import { userApi } from "./api/userApi";
 
-export const store = configureStore({
-  reducer: {
-    auth: userReducer,
-    [productApi.reducerPath]: productApi.reducer, // Add product API reducer
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer, // Add auth API reducer
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      productApi.middleware,
-      authApi.middleware,
-      userApi.middleware
-    ), // Corrected middleware
+// Redux Persist Configuration
+const persistConfig = {
+  key: "auth",
+  storage,
+};
+
+// Persist user authentication state
+const persistedAuthReducer = persistReducer(persistConfig, userReducer);
+
+// Combine reducers
+const rootReducer = combineReducers({
+  auth: persistedAuthReducer,
+  [productApi.reducerPath]: productApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
 });
+
+// Configure store
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Required for Redux Persist
+    }).concat(productApi.middleware, authApi.middleware, userApi.middleware),
+});
+
+// Persistor to manage state persistence
+export const persistor = persistStore(store);

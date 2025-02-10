@@ -24,14 +24,13 @@ function App() {
 
 function MainContent() {
   const location = useLocation(); // Get the current URL path
-  const hideHeader =
-    location.pathname === "/login" || location.pathname === "/register"; // Hide Header only on login & register pages
+  const hideHeader = location.pathname === "/register"; // Only hide Header on Register page
 
   return (
     <div className="App">
       <Toaster position="top-center" reverseOrder={false} />
 
-      {/* Show Header only if not on login or register page */}
+      {/* Show Header except on Register page */}
       {!hideHeader && <Header />}
 
       <div className="container">

@@ -10,7 +10,8 @@ export const userApi = createApi({
   // have to create here product API. In this file we will handle all the endpoints related to the product.
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3004/api/v1", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
+    baseUrl: "/api/v1",
+    credentials: "include", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
   }),
   endpoints: (builder) => ({
     getMe: builder.query({
@@ -22,7 +23,7 @@ export const userApi = createApi({
           dispatch(setUser(data));
           dispatch(setIsAuthenticated(true));
         } catch (error) {
-          console.log(error);
+          console.log("Error fetching user:", error);
         }
       },
     }),
