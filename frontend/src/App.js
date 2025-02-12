@@ -40,6 +40,7 @@ function MainContent() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterUser />} />
+          <Route path="/me/profile" element={<Profile />} />
         </Routes>
       </div>
 
