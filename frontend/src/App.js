@@ -13,6 +13,7 @@ import {
 import ProductDetails from "./components/product/ProductDetails.jsx";
 import Login from "./components/auth/Login.jsx";
 import RegisterUser from "./components/auth/RegisterUser.jsx";
+import Profile from "./components/user/Profile.jsx";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function MainContent() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterUser />} />
+          {/* <Route path="/me/profile" element={<Profile />} /> */}
         </Routes>
       </div>
 

@@ -16,10 +16,12 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     getMe: builder.query({
       query: () => `/me`,
+      providesTags: ["User"],
       transformResponse: (result) => result.user, // Transformresponse a function to manilpulate the data returned by a query or mutation
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
+          console.log("Fetched User Data:", data);
           dispatch(setUser(data));
           dispatch(setIsAuthenticated(true));
         } catch (error) {

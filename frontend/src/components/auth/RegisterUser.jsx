@@ -4,6 +4,8 @@ import React from "react";
 import { useRegisterMutation } from "../../redux/api/authApi";
 import toast from "react-hot-toast";
 import "./RegisterUser.css"; // Ensure this CSS file matches Login.css
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const RegisterUser = () => {
   const [user, setUser] = useState({
@@ -12,17 +14,24 @@ const RegisterUser = () => {
     password: "",
     confirmPassword: "",
   });
-
+  const navigate = useNavigate();
   const { name, email, password, confirmPassword } = user;
   const [register, { isLoading, error, data }] = useRegisterMutation();
 
   console.log(data);
 
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  console.log(data);
+
   useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
     if (error) {
       toast.error(error?.data?.message);
     }
-  }, [error]);
+  }, [error, isAuthenticated, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

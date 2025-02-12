@@ -2,12 +2,29 @@ import React from "react";
 import Search from "./Search";
 import { useGetMeQuery } from "../../redux/api/userApi";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../../redux/api/authApi";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { isLoading } = useGetMeQuery();
+
+  const [logout] = useLogoutMutation(); // Use mutation instead of query
+
   // Show user in header
   const { user } = useSelector((state) => state.auth);
+  // Logout User
+  const logoutHandler = async () => {
+    try {
+      await logout(); // Ensure API call is completed
+      navigate(0); // Refresh the page to reflect logout
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+  // Show loading spinner while fetching user data
+
+  // Show login/logout link based on user logged in status
 
   return (
     <nav className="navbar row">
@@ -77,7 +94,11 @@ const Header = () => {
                 Profile{" "}
               </Link>
 
-              <Link className="dropdown-item text-danger" to="/">
+              <Link
+                className="dropdown-item text-danger"
+                to="/"
+                onClick={logoutHandler}
+              >
                 {" "}
                 Logout{" "}
               </Link>
