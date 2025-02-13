@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import { connectDatabase } from "./config/dbConnect.js";
 import errorMiddleware from "./middlewares/errors.js";
 
+import multer from "multer";
+const upload = multer(); // For handling multipart form data
 // =================================================
 //Handled unchaught exeptions
 process.on("uncaughtException", (err) => {
@@ -29,6 +31,10 @@ connectDatabase();
 
 // =================================================
 // Middlewares
+
+app.use(upload.single("avatar")); // If you're handling file uploads
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Enable CORS (Cross-Origin Resource Sharing) for development if needed
 app.use(cors());

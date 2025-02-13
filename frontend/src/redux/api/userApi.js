@@ -13,10 +13,10 @@ export const userApi = createApi({
     baseUrl: "/api/v1",
     credentials: "include", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getMe: builder.query({
       query: () => `/me`,
-      providesTags: ["User"],
       transformResponse: (result) => result.user, // Transformresponse a function to manilpulate the data returned by a query or mutation
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
@@ -28,8 +28,21 @@ export const userApi = createApi({
           console.log("Error fetching user:", error);
         }
       },
+      providesTags: ["User"],
+    }),
+    // Update User Profile
+    updateProfile: builder.mutation({
+      query(body) {
+        return {
+          url: "/me/update",
+          method: "PUT", // We need to send the user ID in the request body
+          body,
+          formData: true, // Important for file uploads
+        };
+      },
+      invalidatesTags: ["User"], // This will invalidate the User tag when the mutation is done. So, when we update the user profile, the user data will be updated in the store and the component that uses the getMe query will be re-rendered.
     }),
   }),
 });
 
-export const { useGetMeQuery } = userApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
+export const { useGetMeQuery, useUpdateProfileMutation } = userApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

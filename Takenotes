@@ -4,22 +4,18 @@
 //main entry files is the app.js
 //npm i express dotenv mongoose --save
 //npm i nodemon --save-dev (I will use nodemon in development not in production) (change the scripts in package.json to "start": "node backend/app.js")
-/                                                                 //"dev": "NODE_ENV=DEVELOPMENT nodemon backend/app.js"
-                                                                  //"prod": "NODE_ENV=PRODUCTION nodemon backend/app.js"
-                                                                  
+/ //"dev": "NODE_ENV=DEVELOPMENT nodemon backend/app.js"
+//"prod": "NODE_ENV=PRODUCTION nodemon backend/app.js"
+
 //Benefit for using nodemon we dont have to start it again and again.
 
 //Then creating my routes
-
-
-
 
 // We will set up the POSTMAN, we will connect to DATABASE and we will write our first ROUTE or first
 
 // API endpoint and then we will start working on our products resource.
 
-
-// WHAT IS "_LOCAL_URI=mongodb://127.0.0.1:27017/"?
+// WHAT IS "\_LOCAL_URI=mongodb://127.0.0.1:27017/"?
 
 // The DB_LOCAL_URI=mongodb://127.0.0.1:27017/soukboxit is a configuration setting for a local MongoDB database connection. Let's break it down:
 
@@ -38,19 +34,19 @@
 
 // This URI is typically used for development purposes when you're running MongoDB locally on your machine. For production environments, you would usually use a different URI that points to your production database server.
 
-// ==============================================*/
+// ==============================================\*/
 
 // chatGPT
 gladysando@Gladyss-MacBook-Air SoukBoxIT % netstat -tlnp | grep 27017
 netstat: option requires an argument -- p
-Usage:  netstat [-AaLlnW] [-f address_family | -p protocol]
-        netstat [-gilns] [-f address_family]
-        netstat -i | -I interface [-w wait] [-abdgRtS]
-        netstat -s [-s] [-f address_family | -p protocol] [-w wait]
-        netstat -i | -I interface -s [-f address_family | -p protocol]
-        netstat -m [-m]
-        netstat -r [-Aaln] [-f address_family]
-        netstat -rs [-s]
+Usage: netstat [-AaLlnW] [-f address_family | -p protocol]
+netstat [-gilns] [-f address_family]
+netstat -i | -I interface [-w wait] [-abdgRtS]
+netstat -s [-s] [-f address_family | -p protocol] [-w wait]
+netstat -i | -I interface -s [-f address_family | -p protocol]
+netstat -m [-m]
+netstat -r [-Aaln] [-f address_family]
+netstat -rs [-s]
 
 The netstat command you attempted is using Linux-specific options (-p for processes) that are not available on macOS. On macOS, you can use a slightly different approach to check if MongoDB is running and listening on port 27017.
 
@@ -62,7 +58,7 @@ To check if MongoDB is listening on port 27017, use:
 
 lsof -i :27017
 
-	•	If MongoDB is running, you’ll see the process bound to 127.0.0.1:27017 or ::1:27017.
+    •	If MongoDB is running, you’ll see the process bound to 127.0.0.1:27017 or ::1:27017.
 
 2. Check All Listening Ports
 
@@ -70,7 +66,7 @@ If lsof doesn’t show anything, you can check all active network connections an
 
 netstat -an | grep 27017
 
-	•	Look for lines showing LISTEN on 127.0.0.1.27017 or similar.
+    •	Look for lines showing LISTEN on 127.0.0.1.27017 or similar.
 
 3. Check MongoDB Logs
 
@@ -89,20 +85,19 @@ brew services start mongodb-community
 5. Diagnose Issues
 
 If you’re still having trouble, check for the following:
-	•	Configuration File: Inspect /usr/local/etc/mongod.conf to ensure MongoDB is configured to listen on 127.0.0.1.
-	•	Permissions: Ensure the MongoDB data directory has the correct permissions:
+• Configuration File: Inspect /usr/local/etc/mongod.conf to ensure MongoDB is configured to listen on 127.0.0.1.
+• Permissions: Ensure the MongoDB data directory has the correct permissions:
 
 sudo chown -R $(whoami) /usr/local/var/mongodb
 
-// ==============================================*/
-
+// ==============================================\*/
 
 //App. js: This file serves as the entry point for your React application and acts as a container for routing and global component initialization.
- index. js: This file is responsible for rendering the React application and mounting it into the DOM.
+index. js: This file is responsible for rendering the React application and mounting it into the DOM.
 
+// ==============================================\*/
+To understand where the product data comes from in your ProductItem component, we need to follow its flow in the frontend code. Here’s how you can trace the data:
 
-// ==============================================*/
- To understand where the product data comes from in your ProductItem component, we need to follow its flow in the frontend code. Here’s how you can trace the data:
 1. Look at the Parent Component
 
 The product is passed as a prop to the ProductItem component:
@@ -110,26 +105,27 @@ The product is passed as a prop to the ProductItem component:
 <ProductItem product={product} />
 
 You should look at the parent component rendering ProductItem. For example:
-	•	Is it a products list (e.g., ProductList or ProductsPage) that maps over an array of products?
-	•	Check where the product prop originates in the parent.
+• Is it a products list (e.g., ProductList or ProductsPage) that maps over an array of products?
+• Check where the product prop originates in the parent.
 
 2. Backend API Call
 
 The product data likely comes from an API request made to your backend, usually with a function that fetches product data. Look for a function like this in the parent component or a service file:
 
 const fetchProducts = async () => {
-  const response = await fetch('/api/v1/products');
-  const data = await response.json();
-  setProducts(data.products);
+const response = await fetch('/api/v1/products');
+const data = await response.json();
+setProducts(data.products);
 };
 
 This function might be called inside a useEffect hook to populate the products state, and then each ProductItem is rendered with a product from the fetched data:
 
 useEffect(() => {
-  fetchProducts();
+fetchProducts();
 }, []);
 
 return (
+
   <div className="row">
     {products.map((product) => (
       <ProductItem key={product.id} product={product} />
@@ -142,11 +138,11 @@ return (
 Check the endpoint /api/v1/products in your backend code. For example, if you are using Express.js, there might be a route like this:
 
 app.get('/api/v1/products', async (req, res) => {
-  const products = await Product.find(); // Fetch products from the database
-  res.status(200).json({
-    success: true,
-    products,
-  });
+const products = await Product.find(); // Fetch products from the database
+res.status(200).json({
+success: true,
+products,
+});
 });
 
 The products data is retrieved from a database (e.g., MongoDB, MySQL) and sent to the frontend via this API.
@@ -154,63 +150,57 @@ The products data is retrieved from a database (e.g., MongoDB, MySQL) and sent t
 4. Analyze the Backend Data Structure
 
 Ensure the product object returned from the backend contains the necessary fields expected by ProductItem. Based on your code, the object should include:
-	•	product.images: An array of images with at least one having a url property.
-	•	product.name: The product name.
-	•	product.numOfReviews: Number of reviews.
-	•	product.price: Product price.
-	•	product.id: Unique product identifier.
+• product.images: An array of images with at least one having a url property.
+• product.name: The product name.
+• product.numOfReviews: Number of reviews.
+• product.price: Product price.
+• product.id: Unique product identifier.
 
 Example of a typical product object:
 
 {
-  "id": "1",
-  "name": "Product Name",
-  "images": [
-    { "url": "http://example.com/image.jpg" }
-  ],
-  "numOfReviews": 5,
-  "price": "$100"
+"id": "1",
+"name": "Product Name",
+"images": [
+{ "url": "http://example.com/image.jpg" }
+],
+"numOfReviews": 5,
+"price": "$100"
 }
 
 5. Debug the Data
 
 To confirm where the data comes from:
-	•	Add a console.log in the parent component before passing the product prop:
+• Add a console.log in the parent component before passing the product prop:
 
 console.log(product);
 
+    •	Similarly, add a console.log(product) inside ProductItem to ensure the data is received correctly.
 
-	•	Similarly, add a console.log(product) inside ProductItem to ensure the data is received correctly.
+Summary 1. Find the parent component rendering ProductItem. 2. Trace how the products data is fetched (usually via an API call). 3. Check the backend endpoint (/api/v1/products) to confirm how data is retrieved and structured. 4. Verify the database model/schema for the product.
 
-Summary
-	1.	Find the parent component rendering ProductItem.
-	2.	Trace how the products data is fetched (usually via an API call).
-	3.	Check the backend endpoint (/api/v1/products) to confirm how data is retrieved and structured.
-	4.	Verify the database model/schema for the product.
+// ==============================================\*/
 
-// ==============================================*/
-
-
-// ==============================================*/
+// ==============================================\*/
 Yes, this code snippet demonstrates the use of Redux Toolkit Query to fetch products from the backend, and it’s likely the source of the product data being passed into your ProductItem component. Let’s break it down step by step:
 
 1. Product Data Flow Overview
-	•	createApi: This creates an API slice to define endpoints for interacting with the backend.
-	•	fetchBaseQuery: Sets up the base URL (in this case, /api/v1) for making API requests. The proxy is used to direct requests to http://localhost:3004.
-	•	Endpoint (getProducts): Defines how to fetch all products from the /products endpoint on the backend.
+   • createApi: This creates an API slice to define endpoints for interacting with the backend.
+   • fetchBaseQuery: Sets up the base URL (in this case, /api/v1) for making API requests. The proxy is used to direct requests to http://localhost:3004.
+   • Endpoint (getProducts): Defines how to fetch all products from the /products endpoint on the backend.
 
 2. How the Products Are Fetched
 
 In your code, the getProducts endpoint is defined as:
 
 getProducts: builder.query({
-  query: (params) => ({
-    url: "/products",
-  }),
+query: (params) => ({
+url: "/products",
+}),
 }),
 
-	•	The url: "/products" tells Redux Toolkit Query to make a request to http://localhost:3004/api/v1/products (because the base URL is /api/v1 and the proxy redirects it to port 3004).
-	•	This data is fetched from the backend and automatically stored in the Redux store.
+    •	The url: "/products" tells Redux Toolkit Query to make a request to http://localhost:3004/api/v1/products (because the base URL is /api/v1 and the proxy redirects it to port 3004).
+    •	This data is fetched from the backend and automatically stored in the Redux store.
 
 3. Using the Hook in a Component
 
@@ -223,27 +213,27 @@ import { useGetProductsQuery } from "./path-to/productApi";
 import ProductItem from "./ProductItem";
 
 const ProductList = () => {
-  const { data, isLoading, error } = useGetProductsQuery();
+const { data, isLoading, error } = useGetProductsQuery();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching products!</p>;
+if (isLoading) return <p>Loading...</p>;
+if (error) return <p>Error fetching products!</p>;
 
-  return (
-    <div className="row">
-      {data?.products?.map((product) => (
-        <ProductItem key={product.id} product={product} />
-      ))}
-    </div>
-  );
+return (
+<div className="row">
+{data?.products?.map((product) => (
+<ProductItem key={product.id} product={product} />
+))}
+</div>
+);
 };
 
 export default ProductList;
 
-	•	useGetProductsQuery handles:
-	•	Data: The fetched products (data.products).
-	•	Loading state: isLoading is true while fetching.
-	•	Error state: error captures any fetch errors.
-	•	ProductItem receives individual product objects as props.
+    •	useGetProductsQuery handles:
+    •	Data: The fetched products (data.products).
+    •	Loading state: isLoading is true while fetching.
+    •	Error state: error captures any fetch errors.
+    •	ProductItem receives individual product objects as props.
 
 4. Proxy Setup for Backend Connection
 
@@ -258,22 +248,28 @@ Without this, the frontend would attempt to call localhost:3000/api/v1/products,
 The backend must have an endpoint to respond to /api/v1/products. Example in Express.js:
 
 app.get('/api/v1/products', async (req, res) => {
-  const products = await Product.find(); // Fetch products from DB
-  res.status(200).json({
-    success: true,
-    products,
-  });
+const products = await Product.find(); // Fetch products from DB
+res.status(200).json({
+success: true,
+products,
+});
 });
 
 6. Confirming Data in the Store
 
 If you want to inspect how the data is stored in Redux:
-	•	Use Redux DevTools to view the productApi state.
-	•	Check if the data field contains the list of products.
+• Use Redux DevTools to view the productApi state.
+• Check if the data field contains the list of products.
 
 Summary
-	•	Yes, the product in ProductItem is likely sourced from the useGetProductsQuery hook.
-	•	The productApi slice defines the logic for fetching data and storing it in the Redux store.
-	•	The backend endpoint /api/v1/products provides the product data.
+• Yes, the product in ProductItem is likely sourced from the useGetProductsQuery hook.
+• The productApi slice defines the logic for fetching data and storing it in the Redux store.
+• The backend endpoint /api/v1/products provides the product data.
 
-// ==============================================*/
+// ==============================================\*/
+
+// ==============================================\*/
+Multer is a middleware for handling file uploads in Node.js. It’s commonly used with Express.js when you need to upload files like profile pictures, documents, or other media to your server. It helps process multipart/form-data, which is the encoding type required for file uploads.
+
+If you’re working on user profile settings, you can use Multer to allow users to upload profile pictures and store them in a folder or cloud storage like AWS S3 or Cloudinary.
+// ==============================================\*/

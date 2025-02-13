@@ -14,6 +14,7 @@ import ProductDetails from "./components/product/ProductDetails.jsx";
 import Login from "./components/auth/Login.jsx";
 import RegisterUser from "./components/auth/RegisterUser.jsx";
 import Profile from "./components/user/Profile.jsx";
+import UpdateUserProfile from "./components/user/UpdateUserProfile.jsx";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function MainContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterUser />} />
           <Route path="/me/profile" element={<Profile />} />
+          <Route path="/me/update_profile" element={<UpdateUserProfile />} />
         </Routes>
       </div>
 
