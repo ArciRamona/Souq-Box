@@ -30,7 +30,7 @@ const UpdateUserProfile = () => {
       setAddress(user?.address || "");
       setAvatarPreview(user?.avatar?.url || "/images/default_avatar.jpg");
     }
-  }, [user, isSuccess]); // Removed isSuccess to avoid re-triggering after update
+  }, [user, isSuccess]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

@@ -15,6 +15,7 @@ import Login from "./components/auth/Login.jsx";
 import RegisterUser from "./components/auth/RegisterUser.jsx";
 import Profile from "./components/user/Profile.jsx";
 import UpdateUserProfile from "./components/user/UpdateUserProfile.jsx";
+import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 
 function App() {
   return (
@@ -41,8 +42,25 @@ function MainContent() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterUser />} />
-          <Route path="/me/profile" element={<Profile />} />
-          <Route path="/me/update_profile" element={<UpdateUserProfile />} />
+
+          <Route
+            path="/me/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/me/update_profile"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <UpdateUserProfile />{" "}
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
 

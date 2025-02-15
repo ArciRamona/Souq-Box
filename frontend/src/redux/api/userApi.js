@@ -3,7 +3,7 @@
 // Load Logged In User In State
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; //
-import { setIsAuthenticated, setUser } from "../features/userSlice";
+import { setIsAuthenticated, setUser, setLoading } from "../features/userSlice";
 
 // Fetch all products Query
 export const userApi = createApi({
@@ -24,7 +24,9 @@ export const userApi = createApi({
           console.log("Fetched User Data:", data);
           dispatch(setUser(data));
           dispatch(setIsAuthenticated(true));
+          dispatch(setLoading(false));
         } catch (error) {
+          dispatch(setLoading(false));
           console.log("Error fetching user:", error);
         }
       },
