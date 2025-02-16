@@ -12,10 +12,11 @@ const RegisterUser = () => {
     name: "",
     email: "",
     password: "",
+    phone: "",
     confirmPassword: "",
   });
   const navigate = useNavigate();
-  const { name, email, password, confirmPassword } = user;
+  const { name, email, password, phone, confirmPassword } = user;
   const [register, { isLoading, error, data }] = useRegisterMutation();
 
   console.log(data);
@@ -35,7 +36,7 @@ const RegisterUser = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const signUpData = { name, email, password, confirmPassword };
+    const signUpData = { name, email, password, phone, confirmPassword };
     register(signUpData);
   };
 
@@ -77,6 +78,18 @@ const RegisterUser = () => {
             required
             className="input-field"
             placeholder="Enter your email"
+          />
+
+          <label htmlFor="email">Phone</label>
+          <input
+            type="phone"
+            id="phone"
+            name="phone"
+            value={phone}
+            onChange={onChange}
+            required
+            className="input-field"
+            placeholder="Enter your phone number"
           />
 
           <label htmlFor="password">Password</label>

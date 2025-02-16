@@ -29,6 +29,9 @@ const Profile = () => {
 
           <h4>Joined On</h4>
           <p>{user?.createdAt?.substring(0, 10)}</p>
+
+          <h4>Phone No.</h4>
+          <p>{user?.phone || "No phone number added"}</p>
         </div>
       </div>
     </UserLayout>
