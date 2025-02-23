@@ -8,6 +8,7 @@ import ErrorHandler from "../utils/errorHandlers.js";
 import sendToken from "../utils/sendToken.js";
 import sendEmail from "../utils/sendEmail.js";
 import crypto from "crypto";
+import { upload_file } from "../utils/cloudinary.js";
 
 // Register user => /api/v1/register
 export const registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -67,6 +68,19 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     message: "Logged Out",
+  });
+});
+
+// Upload User avatar => /api/v1/me/upload_avatar
+export const uploadAvatar = catchAsyncErrors(async (req, res, next) => {
+  const avatarResponse = await upload_file(req.body.avatar, "SouqBox/avatars");
+  console.log(req.body.avatar);
+  const user = await User.findByIdAndUpdate(req?.user?._id, {
+    avatar: avatarResponse,
+  });
+
+  res.status(200).json({
+    user,
   });
 });
 
@@ -146,7 +160,7 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-// Get user Profile - Get current user profile => /aipi/v1/me
+// Get user Profile - Get current user profile => /api/v1/me
 
 export const getUserProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user._id);

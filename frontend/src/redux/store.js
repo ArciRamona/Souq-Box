@@ -11,7 +11,7 @@ import { userApi } from "./api/userApi";
 const persistConfig = {
   key: "auth",
   storage,
-  whitelist: ["auth"], // Persist only auth state
+  whitelist: ["auth", "user"], // Persist only auth state
 };
 
 // Persist user authentication state

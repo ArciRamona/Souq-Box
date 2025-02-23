@@ -44,7 +44,20 @@ export const userApi = createApi({
       },
       invalidatesTags: ["User"], // This will invalidate the User tag when the mutation is done. So, when we update the user profile, the user data will be updated in the store and the component that uses the getMe query will be re-rendered.
     }),
+
+    uploadAvatar: builder.mutation({
+      query: (formData) => ({
+        url: "/me/upload_avatar",
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetMeQuery, useUpdateProfileMutation } = userApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
+export const {
+  useGetMeQuery,
+  useUpdateProfileMutation,
+  useUploadAvatarMutation,
+} = userApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

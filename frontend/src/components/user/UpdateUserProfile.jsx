@@ -18,8 +18,7 @@ const UpdateUserProfile = () => {
   const [avatarPreview, setAvatarPreview] = useState("");
 
   const navigate = useNavigate();
-  const [updateProfile, { isLoading, error, isSuccess }] =
-    useUpdateProfileMutation();
+  const [updateProfile, { isLoading, isSuccess }] = useUpdateProfileMutation();
 
   useEffect(() => {
     if (user && !isSuccess) {

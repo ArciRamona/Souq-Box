@@ -12,6 +12,7 @@ import {
   getUserDetails,
   updateUser,
   deleteUser,
+  uploadAvatar,
 } from "../controllers/authControllers.js";
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.route("/password/reset/:token").put(resetPassword);
 router.route("/me").get(isAuthenticatedUser, getUserProfile);
 router.route("/me/update").put(isAuthenticatedUser, updateUserProfile);
 router.route("/password/update").put(isAuthenticatedUser, updatePassword);
+router.route("/me/upload_avatar").put(isAuthenticatedUser, uploadAvatar);
 
 // will create admin routes to get all users and get specific user and then update and delete user
 router

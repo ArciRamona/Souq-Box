@@ -4,6 +4,8 @@ import { useGetMeQuery } from "../../redux/api/userApi";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../redux/api/authApi";
+import { useDispatch } from "react-redux";
+import { logoutSuccess } from "../../redux/features/userSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,10 +16,13 @@ const Header = () => {
   // Show user in header
   const { user } = useSelector((state) => state.auth);
   // Logout User
+  const dispatch = useDispatch();
   const logoutHandler = async () => {
     try {
-      await logout(); // Ensure API call is completed
-      navigate(0); // Refresh the page to reflect logout
+      await logout().unwrap(); // Ensure API call completes
+      dispatch(logoutSuccess()); // Reset Redux state
+      localStorage.removeItem("token"); // Remove token
+      navigate("/login", { replace: true }); // Redirect properly
     } catch (error) {
       console.error("Logout failed:", error);
     }
