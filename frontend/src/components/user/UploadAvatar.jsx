@@ -8,9 +8,9 @@ import { useSelector } from "react-redux";
 
 const UploadAvatar = () => {
   const { user } = useSelector((state) => state.auth);
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(
-    user?.avatar ? user.avatar.url : "/images/default_avatar.jpg"
+    user?.avatar ? user?.avatar?.url : "/images/default_avatar.jpg"
   );
 
   const navigate = useNavigate();
@@ -28,27 +28,6 @@ const UploadAvatar = () => {
   }, [error, isSuccess, navigate]);
 
   // 🟢 Handle File Selection
-  const onChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        return toast.error("Please select a valid image file");
-      }
-
-      if (file.size > 2 * 1024 * 1024) {
-        return toast.error("File size must be under 2MB");
-      }
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-
-      setAvatar(file);
-    }
-  };
 
   // 🟢 Handle Avatar Upload
   const submitHandler = async (e) => {
@@ -58,29 +37,27 @@ const UploadAvatar = () => {
       return toast.error("Please select an avatar to upload.");
     }
 
-    const formData = new FormData();
-    formData.append("avatar", avatar);
+    const userData = {
+      avatar,
+    };
 
-    console.log("Uploading avatar..."); // ✅ Check if this logs
-    console.log("FormData contains:", formData.get("avatar")); // ✅ Check if this logs the correct file
+    console.log(userData);
 
-    try {
-      const response = await uploadAvatar(formData).unwrap();
-      console.log("Upload Response:", response); // ✅ Debug the response
-
-      if (response.url) {
-        toast.success(response.message || "Avatar uploaded successfully");
-        navigate("/me/profile");
-      } else {
-        toast.error("Upload failed. No URL returned.");
-        console.error("No URL in response:", response);
-      }
-    } catch (err) {
-      console.error("Upload Error:", err);
-      toast.error(err?.data?.message || "Failed to upload avatar");
-    }
+    uploadAvatar(userData);
   };
 
+  const onChange = (e) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      if (reader.readyState === 2) {
+        setAvatarPreview(reader.result);
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
   return (
     <UserLayout>
       <div className="row wrapper">
@@ -109,13 +86,14 @@ const UploadAvatar = () => {
                 type="file"
                 name="avatar"
                 className="form-control"
-                id="avatarUpload"
+                id="customFile"
                 accept="image/*"
                 onChange={onChange}
               />
             </div>
 
             <button
+              id="register_button"
               type="submit"
               className="btn w-100 py-2"
               style={{ backgroundColor: "#f90", color: "white" }}

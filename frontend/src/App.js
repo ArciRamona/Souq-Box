@@ -17,6 +17,7 @@ import Profile from "./components/user/Profile.jsx";
 import UpdateUserProfile from "./components/user/UpdateUserProfile.jsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import UploadAvatar from "./components/user/UploadAvatar.jsx";
+import UpdatePassword from "./components/user/UpdatePassword.jsx";
 
 function App() {
   return (
@@ -62,13 +63,22 @@ function MainContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/me/upload_avatar"
             element={
               <ProtectedRoute>
                 {" "}
                 <UploadAvatar />{" "}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/me/update_password"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <UpdatePassword />{" "}
               </ProtectedRoute>
             }
           />
