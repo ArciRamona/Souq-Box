@@ -44,18 +44,18 @@ const ForgotPassword = () => {
         <div className="forgot-password-box">
           <div className="logo-container">
             <img
-              src="/images/AmazonLogo.png"
-              alt="Amazon Logo"
+              src="/images/SouqBoxITLogo.png"
+              alt="SouqBox Logo"
               className="logo"
             />
           </div>
 
           <h2>Password Assistance</h2>
-          <p>Enter your email or mobile phone number to reset your password.</p>
+          <p>Enter your email to reset your password.</p>
 
           <form className="forgot-password-form" onSubmit={submitHandler}>
             <label htmlFor="email_field" className="form-label">
-              Email or mobile phone number
+              Email
             </label>
             <input
               type="email"
