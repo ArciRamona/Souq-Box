@@ -61,6 +61,14 @@ export const userApi = createApi({
         body,
       }),
     }),
+
+    forgotPassword: builder.mutation({
+      query: (body) => ({
+        url: "/password/forgot",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -69,4 +77,5 @@ export const {
   useUpdateProfileMutation,
   useUploadAvatarMutation,
   useUpdatePasswordMutation,
+  useForgotPasswordMutation,
 } = userApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

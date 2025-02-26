@@ -69,9 +69,9 @@ const Login = () => {
             placeholder="Enter your password"
           />
 
-          <a href="#" className="forgot-password">
+          <Link to="/password/update" className="forgot-password">
             Forgot your password?
-          </a>
+          </Link>
 
           <button type="submit" className="sign-in-btn" disabled={isLoading}>
             {isLoading ? "Authenticating..." : "Sign In"}

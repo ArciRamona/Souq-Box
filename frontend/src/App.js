@@ -18,6 +18,7 @@ import UpdateUserProfile from "./components/user/UpdateUserProfile.jsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import UploadAvatar from "./components/user/UploadAvatar.jsx";
 import UpdatePassword from "./components/user/UpdatePassword.jsx";
+import ForgotPassword from "./components/auth/ForgotPassword.jsx";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function MainContent() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterUser />} />
+          <Route path="/password/update" element={<ForgotPassword />} />
 
           <Route
             path="/me/profile"
