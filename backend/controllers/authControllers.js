@@ -73,7 +73,7 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
 
 // Upload User avatar => /api/v1/me/upload_avatar
 export const uploadAvatar = catchAsyncErrors(async (req, res, next) => {
-  const avatarResponse = await upload_file(req.body.avatar, "SouqBox/avatars");
+  const avatarResponse = await upload_file(req.body.avatar, "Home");
 
   console.log(req.body.avatar);
   // Remove previous avatar
