@@ -19,6 +19,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import UploadAvatar from "./components/user/UploadAvatar.jsx";
 import UpdatePassword from "./components/user/UpdatePassword.jsx";
 import ForgotPassword from "./components/auth/ForgotPassword.jsx";
+import Cart from "./components/cart/Cart.jsx";
 
 function App() {
   return (
@@ -81,6 +82,16 @@ function MainContent() {
               <ProtectedRoute>
                 {" "}
                 <UpdatePassword />{" "}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <Cart />{" "}
               </ProtectedRoute>
             }
           />

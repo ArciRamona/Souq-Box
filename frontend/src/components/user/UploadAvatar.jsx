@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useUploadAvatarMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import MetaData from "../layout/MetaData";
 
 const UploadAvatar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -59,52 +60,58 @@ const UploadAvatar = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
   return (
-    <UserLayout>
-      <div className="row wrapper">
-        <div className="col-10 col-lg-8">
-          <form className="shadow rounded bg-body p-4" onSubmit={submitHandler}>
-            <h2 className="mb-4 text-center ">Upload Avatar</h2>
-
-            <div className="mb-3 text-center">
-              <figure className="avatar item-rtl">
-                <img
-                  src={avatarPreview}
-                  className="rounded-circle"
-                  alt="avatar"
-                  width={240}
-                  height={240}
-                  style={{ objectFit: "cover", border: "3px solid #ccc" }}
-                />
-              </figure>
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label" htmlFor="avatarUpload">
-                Choose Avatar (Max: 2MB)
-              </label>
-              <input
-                type="file"
-                name="avatar"
-                className="form-control"
-                id="customFile"
-                accept="image/*"
-                onChange={onChange}
-              />
-            </div>
-
-            <button
-              id="register_button"
-              type="submit"
-              className="btn w-100 py-2"
-              style={{ backgroundColor: "#f90", color: "white" }}
-              disabled={isLoading}
+    <>
+      <MetaData title={"Update Avatar"} />
+      <UserLayout>
+        <div className="row wrapper">
+          <div className="col-10 col-lg-8">
+            <form
+              className="shadow rounded bg-body p-4"
+              onSubmit={submitHandler}
             >
-              {isLoading ? "Uploading..." : "Upload Avatar"}
-            </button>
-          </form>
+              <h2 className="mb-4 text-center ">Upload Avatar</h2>
+
+              <div className="mb-3 text-center">
+                <figure className="avatar item-rtl">
+                  <img
+                    src={avatarPreview}
+                    className="rounded-circle"
+                    alt="avatar"
+                    width={240}
+                    height={240}
+                    style={{ objectFit: "cover", border: "3px solid #ccc" }}
+                  />
+                </figure>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label" htmlFor="avatarUpload">
+                  Choose Avatar (Max: 2MB)
+                </label>
+                <input
+                  type="file"
+                  name="avatar"
+                  className="form-control"
+                  id="customFile"
+                  accept="image/*"
+                  onChange={onChange}
+                />
+              </div>
+
+              <button
+                id="register_button"
+                type="submit"
+                className="btn w-100 py-2"
+                style={{ backgroundColor: "#f90", color: "white" }}
+                disabled={isLoading}
+              >
+                {isLoading ? "Uploading..." : "Upload Avatar"}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </UserLayout>
+      </UserLayout>
+    </>
   );
 };
 

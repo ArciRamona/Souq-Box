@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import UserLayout from "../../components/layout/UserLayout";
 import { useGetMeQuery } from "../../redux/api/userApi";
+import MetaData from "../layout/MetaData";
+
 const UpdateUserProfile = () => {
   const { user } = useSelector((state) => state.auth);
 
@@ -63,121 +65,124 @@ const UpdateUserProfile = () => {
   };
 
   return (
-    <UserLayout>
-      <div className="row wrapper">
-        <div className="col-10 col-lg-8">
-          <form
-            className="shadow rounded bg-body p-4"
-            onSubmit={handleSubmit}
-            encType="multipart/form-data"
-          >
-            <h2 className="mb-4">Update Profile</h2>
-
-            {/* Profile Picture */}
-            <div className="mb-3 text-center">
-              <img
-                src={avatarPreview}
-                alt="Avatar Preview"
-                className="img-fluid rounded-circle"
-                width="120"
-              />
-              <input
-                type="file"
-                className="form-control mt-2"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </div>
-
-            {/* Name */}
-            <div className="mb-3">
-              <label htmlFor="name_field" className="form-label">
-                {" "}
-                Name{" "}
-              </label>
-              <input
-                type="text"
-                id="name_field"
-                className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-
-            {/* Email */}
-            <div className="mb-3">
-              <label htmlFor="email_field" className="form-label">
-                {" "}
-                Email{" "}
-              </label>
-              <input
-                type="email"
-                id="email_field"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            {/* Phone */}
-            <div className="mb-3">
-              <label htmlFor="phone_field" className="form-label">
-                {" "}
-                Phone{" "}
-              </label>
-              <input
-                type="text"
-                id="phone_field"
-                className="form-control"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-
-            {/* Address */}
-            <div className="mb-3">
-              <label htmlFor="address_field" className="form-label">
-                {" "}
-                Address{" "}
-              </label>
-              <input
-                type="text"
-                id="address_field"
-                className="form-control"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-
-            {/* Password */}
-            <div className="mb-3">
-              <label htmlFor="password_field" className="form-label">
-                {" "}
-                New Password{" "}
-              </label>
-              <input
-                type="password"
-                id="password_field"
-                className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn w-100"
-              style={{ backgroundColor: "#f90", color: "white" }}
-              disabled={isLoading}
+    <>
+      <MetaData title={"Update User Profile"} />
+      <UserLayout>
+        <div className="row wrapper">
+          <div className="col-10 col-lg-8">
+            <form
+              className="shadow rounded bg-body p-4"
+              onSubmit={handleSubmit}
+              encType="multipart/form-data"
             >
-              {isLoading ? "Updating..." : "Update Profile"}
-            </button>
-          </form>
+              <h2 className="mb-4">Update Profile</h2>
+
+              {/* Profile Picture */}
+              <div className="mb-3 text-center">
+                <img
+                  src={avatarPreview}
+                  alt="Avatar Preview"
+                  className="img-fluid rounded-circle"
+                  width="120"
+                />
+                <input
+                  type="file"
+                  className="form-control mt-2"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </div>
+
+              {/* Name */}
+              <div className="mb-3">
+                <label htmlFor="name_field" className="form-label">
+                  {" "}
+                  Name{" "}
+                </label>
+                <input
+                  type="text"
+                  id="name_field"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Email */}
+              <div className="mb-3">
+                <label htmlFor="email_field" className="form-label">
+                  {" "}
+                  Email{" "}
+                </label>
+                <input
+                  type="email"
+                  id="email_field"
+                  className="form-control"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="mb-3">
+                <label htmlFor="phone_field" className="form-label">
+                  {" "}
+                  Phone{" "}
+                </label>
+                <input
+                  type="text"
+                  id="phone_field"
+                  className="form-control"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+
+              {/* Address */}
+              <div className="mb-3">
+                <label htmlFor="address_field" className="form-label">
+                  {" "}
+                  Address{" "}
+                </label>
+                <input
+                  type="text"
+                  id="address_field"
+                  className="form-control"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+
+              {/* Password */}
+              <div className="mb-3">
+                <label htmlFor="password_field" className="form-label">
+                  {" "}
+                  New Password{" "}
+                </label>
+                <input
+                  type="password"
+                  id="password_field"
+                  className="form-control"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="btn w-100"
+                style={{ backgroundColor: "#f90", color: "white" }}
+                disabled={isLoading}
+              >
+                {isLoading ? "Updating..." : "Update Profile"}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </UserLayout>
+      </UserLayout>
+    </>
   );
 };
 

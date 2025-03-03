@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit"; // Import createSlice
+import { createSlice } from "@reduxjs/toolkit";
 
 // Define the initial state
 const initialState = {
-  cartItems: localStorage.getItem("carItems")
-    ? JSON.parse(localStorage.getItem("carItems"))
+  cartItems: localStorage.getItem("cartItems")
+    ? JSON.parse(localStorage.getItem("cartItems"))
     : [], // Ensure cartItems is initialized as an array
 };
 
@@ -14,32 +14,28 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const item = action.payload;
+      const existingItem = state.cartItems.find((i) => i.id === item.id);
 
-      const isItemExist = state.cartItems.find((i) => i.id === item.id);
-      if (isItemExist) {
-        state.cartItems = state.cartItems.map((i) =>
-          i.id === isItemExist.id ? item : i
-        );
+      if (existingItem) {
+        // ✅ Increase quantity by the selected amount, not just 1
+        existingItem.quantity += item.quantity;
       } else {
-        state.cartItems = [...state.cartItems, item];
+        // ✅ Add new item with the specified quantity
+        state.cartItems.push({ ...item });
       }
 
-      // Log the item to inspect its structure
-      console.log("Received item:", item);
-
-      // Check if the item has a valid structure before adding
-      if (item && item.id) {
-        // Ensure it's using 'id'
-        state.cartItems.push(item);
-        console.log("Added to cart:", state.cartItems);
-      } else {
-        console.error("Invalid item:", item); // Log error if the item is invalid
-      }
+      // ✅ Save updated cart to localStorage
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
+      console.log("Updated Cart Items:", state.cartItems);
     },
     removeFromCart: (state, action) => {
       const itemId = action.payload;
       state.cartItems = state.cartItems.filter((item) => item.id !== itemId);
+
+      // ✅ Save updated cart to localStorage
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+
       console.log("Updated cartItems after removal:", state.cartItems);
     },
   },

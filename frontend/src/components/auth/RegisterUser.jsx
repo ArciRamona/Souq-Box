@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import "./RegisterUser.css"; // Ensure this CSS file matches Login.css
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import MetaData from "../layout/MetaData";
 
 const RegisterUser = () => {
   const [user, setUser] = useState({
@@ -45,108 +46,111 @@ const RegisterUser = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-box">
-        <div className="logo-container">
-          <img
-            src="/images/SouqBoxITLogo.png"
-            alt="SouqBox Logo"
-            className="logo"
-          />
-        </div>
-        <h2>Create account</h2>
-        <form onSubmit={submitHandler}>
-          <label htmlFor="name">Your name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={name}
-            onChange={onChange}
-            required
-            className="input-field"
-            placeholder="First and last name"
-          />
+    <>
+      <MetaData title={"Register"} />
+      <div className="register-container">
+        <div className="register-box">
+          <div className="logo-container">
+            <img
+              src="/images/SouqBoxITLogo.png"
+              alt="SouqBox Logo"
+              className="logo"
+            />
+          </div>
+          <h2>Create account</h2>
+          <form onSubmit={submitHandler}>
+            <label htmlFor="name">Your name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={onChange}
+              required
+              className="input-field"
+              placeholder="First and last name"
+            />
 
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={onChange}
-            required
-            className="input-field"
-            placeholder="Enter your email"
-          />
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={onChange}
+              required
+              className="input-field"
+              placeholder="Enter your email"
+            />
 
-          <label htmlFor="email">Phone</label>
-          <input
-            type="phone"
-            id="phone"
-            name="phone"
-            value={phone}
-            onChange={onChange}
-            required
-            className="input-field"
-            placeholder="Enter your phone number"
-          />
+            <label htmlFor="email">Phone</label>
+            <input
+              type="phone"
+              id="phone"
+              name="phone"
+              value={phone}
+              onChange={onChange}
+              required
+              className="input-field"
+              placeholder="Enter your phone number"
+            />
 
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            required
-            className="input-field"
-            placeholder="At least 6 characters"
-          />
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={onChange}
+              required
+              className="input-field"
+              placeholder="At least 6 characters"
+            />
 
-          <label htmlFor="confirmPassword">Re-enter password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={onChange}
-            required
-            className="input-field"
-          />
+            <label htmlFor="confirmPassword">Re-enter password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={onChange}
+              required
+              className="input-field"
+            />
 
-          <button type="submit" className="register-btn" disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create your SouqBox account"}
-          </button>
-        </form>
+            <button type="submit" className="register-btn" disabled={isLoading}>
+              {isLoading ? "Creating..." : "Create your SouqBox account"}
+            </button>
+          </form>
 
-        <p className="terms-text">
-          By creating an account, you agree to SouqBox's
-          <a href="#" className="terms-link">
-            {" "}
-            Conditions of Use{" "}
-          </a>
-          and
-          <a href="#" className="terms-link">
-            {" "}
-            Privacy Notice
-          </a>
-          .
-        </p>
+          <p className="terms-text">
+            By creating an account, you agree to SouqBox's
+            <a href="#" className="terms-link">
+              {" "}
+              Conditions of Use{" "}
+            </a>
+            and
+            <a href="#" className="terms-link">
+              {" "}
+              Privacy Notice
+            </a>
+            .
+          </p>
 
-        <div className="divider"></div>
+          <div className="divider"></div>
 
-        <div className="new-account">
-          <p>Already have an account?</p>
-          <button
-            className="sign-in-btn"
-            onClick={() => (window.location.href = "/login")}
-          >
-            Sign in
-          </button>
+          <div className="new-account">
+            <p>Already have an account?</p>
+            <button
+              className="sign-in-btn"
+              onClick={() => (window.location.href = "/login")}
+            >
+              Sign in
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

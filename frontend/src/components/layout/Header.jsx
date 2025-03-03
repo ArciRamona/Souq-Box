@@ -13,7 +13,13 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { cartItems } = useSelector((state) => state.cart); // Get cart items
+  const { cartItems } = useSelector((state) => state.cart); // ✅ Define cartItems before using it
+
+  // ✅ Fix: Calculate total quantity after defining cartItems
+  const totalCartItems = cartItems.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
 
   const logoutHandler = async () => {
     try {
@@ -50,27 +56,39 @@ const Header = () => {
             color: "#f90",
             textDecoration: "none",
             position: "relative",
+            display: "inline-block",
           }}
         >
-          <i className="fas fa-shopping-cart fa-lg"></i>{" "}
-          {/* Font Awesome Cart Icon */}
+          <i
+            className="fas fa-shopping-cart fa-lg"
+            style={{ position: "relative", fontSize: "1.8rem" }}
+          >
+            {totalCartItems > 0 && ( // Show badge only if cart has items
+              <span
+                className="badge bg-white"
+                id="cart_count"
+                style={{
+                  position: "absolute",
+                  top: "-29px",
+                  right: "-17px",
+                  fontSize: "12px",
+                  padding: "4px 4.5px",
+                  borderRadius: "50%",
+                  minWidth: "15px",
+                  minHeight: "15px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: "#f90",
+                }}
+              >
+                {totalCartItems} {/* ✅ Fix: Display total quantity */}
+              </span>
+            )}
+          </i>
           <span id="cart" className="ms-2">
             Cart
           </span>
-          {cartItems.length > 0 && ( // Show badge only if items exist
-            <span
-              className="badge bg-danger ms-2"
-              id="cart_count"
-              style={{
-                position: "absolute",
-                top: "-5px",
-                right: "-10px",
-                fontSize: "12px",
-              }}
-            >
-              {cartItems.length}
-            </span>
-          )}
         </Link>
 
         {user ? (
@@ -102,15 +120,12 @@ const Header = () => {
               <Link className="dropdown-item" to="/admin/dashboard">
                 Dashboard
               </Link>
-
               <Link className="dropdown-item" to="/me/orders">
                 Orders
               </Link>
-
               <Link className="dropdown-item" to="/me/profile">
                 Profile
               </Link>
-
               <Link
                 className="dropdown-item text-danger"
                 to="/"
