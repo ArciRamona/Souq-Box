@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import React from "react";
 import UserLayout from "../layout/UserLayout";
 import { useNavigate } from "react-router-dom";
 import { useUpdatePasswordMutation } from "../../redux/api/userApi";
 import toast from "react-hot-toast";
 
 const UpdatePassword = () => {
-  const [oldPassword, setOldPassword] = useState("");
-  const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [updatePassword, { isLoading, error, isSuccess }] =
     useUpdatePasswordMutation();
 
   useEffect(() => {
     if (error) {
-      toast.error(error?.data?.message || "Wrong old password");
+      toast.error(error?.data?.message || "Failed to update password");
     }
     if (isSuccess) {
       toast.success("Password updated successfully");
@@ -23,18 +24,18 @@ const UpdatePassword = () => {
     }
   }, [error, isSuccess, navigate]);
 
-  // 🟢 Handle File Selection
-
-  // 🟢 Handle Avatar Upload
+  // Handle Form Submission
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (newPassword !== confirmPassword) {
+      return toast.error("Passwords do not match!");
+    }
+
     const userData = {
       oldPassword,
-      password,
+      password: newPassword,
     };
-
-    console.log(userData);
 
     updatePassword(userData);
   };
@@ -43,37 +44,58 @@ const UpdatePassword = () => {
     <UserLayout>
       <div className="row wrapper">
         <div className="col-10 col-lg-8">
-          <form className="shadow rounded bg-body" onSubmit={submitHandler}>
-            <h2 className="mb-4">Update Password</h2>
+          <form className="shadow rounded bg-body p-4" onSubmit={submitHandler}>
+            <h2 className="mb-4 text-center">Update Password</h2>
+
             <div className="mb-3">
-              <label hmtmlFor="old_password_field" className="form-label">
-                Old Password
+              <label className="form-label" htmlFor="oldPassword">
+                Current Password
               </label>
               <input
                 type="password"
-                id="old_password_field"
+                name="oldPassword"
                 className="form-control"
+                id="oldPassword"
                 value={oldPassword}
                 onChange={(e) => setOldPassword(e.target.value)}
+                required
               />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="new_password_field" className="form-label">
+              <label className="form-label" htmlFor="newPassword">
                 New Password
               </label>
               <input
                 type="password"
-                id="new_password_field"
+                name="newPassword"
                 className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label" htmlFor="confirmPassword">
+                Confirm New Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                className="form-control"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
               />
             </div>
 
             <button
               type="submit"
-              className="btn update-btn w-100"
+              className="btn w-100 py-2"
+              style={{ backgroundColor: "#f90", color: "white" }}
               disabled={isLoading}
             >
               {isLoading ? "Updating..." : "Update Password"}
