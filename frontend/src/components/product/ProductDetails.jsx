@@ -5,11 +5,11 @@ import { useGetProductDetailsQuery } from "../../redux/api/productsApi";
 import toast from "react-hot-toast";
 import Loader from "../layout/Loader";
 import StarRatings from "react-star-ratings";
-// import { useDispatch } from "react-redux";
-// import { addToCart } from "../../redux/features/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/cartSlice";
 const ProductDetails = () => {
   const params = useParams();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const { data, isLoading, error, isError } = useGetProductDetailsQuery(
     params?.id
@@ -41,20 +41,19 @@ const ProductDetails = () => {
     setQuantity(quantity - 1);
   };
 
-  // const addItemToCart = () => {
-  //   const cartItem = {
-  //     id: product?._id, // Make sure this is correctly referencing 'id'
-  //     name: product?.name,
-  //     price: product?.price,
-  //     image: product?.images[0]?.url,
-  //     stock: product?.stock,
-  //     quantity,
-  //   };
+  const addItemToCart = () => {
+    const cartItem = {
+      id: product?._id,
+      name: product?.name,
+      price: product?.price,
+      image: product?.images[0]?.url,
+      stock: product?.stock,
+      quantity,
+    };
 
-  //   console.log("Dispatching cartItem:", cartItem); // Log the cartItem being dispatched
-
-  //   dispatch(addToCart(cartItem)); // Dispatch the correct action
-  // };
+    dispatch(addToCart(cartItem)); // Dispatch the correct action
+    toast.success("Item added to cart successfully!");
+  };
 
   if (isLoading) return <Loader />;
 
@@ -133,7 +132,7 @@ const ProductDetails = () => {
           id="cart_btn"
           className="btn btn-primary d-inline ms-4"
           disabled={product.stock <= 0}
-          // onClick={addItemToCart}
+          onClick={addItemToCart}
         >
           Add to Cart
         </button>
