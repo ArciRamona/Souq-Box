@@ -1,22 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useGetProductDetailsQuery } from "../../redux/api/productsApi";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useGetProductDetailsQuery } from "../../redux/api/productsApi";
 import toast from "react-hot-toast";
 import Loader from "../layout/Loader";
 import StarRatings from "react-star-ratings";
-// Product Detail Page
+// import { useDispatch } from "react-redux";
+// import { addToCart } from "../../redux/features/cartSlice";
 const ProductDetails = () => {
-  // Fetch product details data
   const params = useParams();
-
-  // Fetch product details data
+  // const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
   const { data, isLoading, error, isError } = useGetProductDetailsQuery(
     params?.id
   );
   const product = data?.product;
-
   const [activeImg, setActiveImg] = useState("");
 
   useEffect(() => {
@@ -33,7 +31,33 @@ const ProductDetails = () => {
     }
   }, [error, isError]);
 
+  const increseQty = () => {
+    if (quantity >= product.stock) return;
+    setQuantity(quantity + 1);
+  };
+
+  const decreseQty = () => {
+    if (quantity <= 1) return;
+    setQuantity(quantity - 1);
+  };
+
+  // const addItemToCart = () => {
+  //   const cartItem = {
+  //     id: product?._id, // Make sure this is correctly referencing 'id'
+  //     name: product?.name,
+  //     price: product?.price,
+  //     image: product?.images[0]?.url,
+  //     stock: product?.stock,
+  //     quantity,
+  //   };
+
+  //   console.log("Dispatching cartItem:", cartItem); // Log the cartItem being dispatched
+
+  //   dispatch(addToCart(cartItem)); // Dispatch the correct action
+  // };
+
   if (isLoading) return <Loader />;
+
   return (
     <div className="row d-flex justify-content-around">
       <div className="col-12 col-lg-5 img-fluid" id="product_image">
@@ -48,15 +72,17 @@ const ProductDetails = () => {
         </div>
         <div className="row justify-content-start mt-5">
           {product?.images?.map((img) => (
-            <div className="col-2 ms-4 mt-2">
+            <div className="col-2 ms-4 mt-2" key={img?.url}>
               <a role="button">
                 <img
-                  className={`d-block border rounded p-3 cursor-pointer ${img.url === activeImg ? "border-warning" : ""} `} //this borber warning id from bootstrap
+                  className={`d-block border rounded p-3 cursor-pointer ${
+                    img.url === activeImg ? "border-warning" : ""
+                  } `}
                   height="100"
                   width="100"
                   src={img?.url}
                   alt={img?.url}
-                  onClick={(e) => setActiveImg(img.url)}
+                  onClick={() => setActiveImg(img.url)}
                 />
               </a>
             </div>
@@ -72,7 +98,6 @@ const ProductDetails = () => {
 
         <div className="d-flex">
           <StarRatings
-            // From react-star-ratings
             rating={product?.ratings}
             starRatedColor="#ffb829"
             numberOfStars={5}
@@ -82,28 +107,33 @@ const ProductDetails = () => {
             renderStarIcon={() => <i className="fa fa-star star-active"></i>}
           />
           <span id="no-of-reviews" className="pt-1 ps-2">
-            {" "}
-            ({product?.numOfReviews}){" "}
+            ({product?.numOfReviews})
           </span>
         </div>
         <hr />
 
         <p id="product_price">${product?.price}</p>
         <div className="stockCounter d-inline">
-          <span className="btn btn-danger minus">-</span>
+          <span className="btn btn-danger minus" onClick={decreseQty}>
+            -
+          </span>
           <input
             type="number"
             className="form-control count d-inline"
-            value="1"
-            readonly
+            value={quantity}
+            readOnly
+            onChange={(e) => setQuantity(Number(e.target.value))}
           />
-          <span className="btn btn-primary plus">+</span>
+          <span className="btn btn-primary plus" onClick={increseQty}>
+            +
+          </span>
         </div>
         <button
           type="button"
           id="cart_btn"
           className="btn btn-primary d-inline ms-4"
-          disabled=""
+          disabled={product.stock <= 0}
+          // onClick={addItemToCart}
         >
           Add to Cart
         </button>

@@ -1,35 +1,30 @@
 import React from "react";
 import Search from "./Search";
 import { useGetMeQuery } from "../../redux/api/userApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../redux/api/authApi";
-import { useDispatch } from "react-redux";
 import { logoutSuccess } from "../../redux/features/userSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const { isLoading } = useGetMeQuery();
-
-  const [logout] = useLogoutMutation(); // Use mutation instead of query
-
-  // Show user in header
-  const { user } = useSelector((state) => state.auth);
-  // Logout User
+  const [logout] = useLogoutMutation();
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart); // Get cart items
+
   const logoutHandler = async () => {
     try {
-      await logout().unwrap(); // Ensure API call completes
-      dispatch(logoutSuccess()); // Reset Redux state
-      localStorage.removeItem("token"); // Remove token
-      navigate("/login", { replace: true }); // Redirect properly
+      await logout().unwrap();
+      dispatch(logoutSuccess());
+      localStorage.removeItem("token");
+      navigate("/login", { replace: true });
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
-  // Show loading spinner while fetching user data
-
-  // Show login/logout link based on user logged in status
 
   return (
     <nav className="navbar row">
@@ -48,15 +43,35 @@ const Header = () => {
         <Search />
       </div>
       <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-        <a href="/cart" style={{ textDecoration: "none" }}>
-          <span id="cart" className="ms-3">
-            {" "}
-            Cart{" "}
+        {/* Cart Icon with Badge */}
+        <Link
+          to="/cart"
+          style={{
+            color: "#f90",
+            textDecoration: "none",
+            position: "relative",
+          }}
+        >
+          <i className="fas fa-shopping-cart fa-lg"></i>{" "}
+          {/* Font Awesome Cart Icon */}
+          <span id="cart" className="ms-2">
+            Cart
           </span>
-          <span className="ms-1" id="cart_count">
-            0
-          </span>
-        </a>
+          {cartItems.length > 0 && ( // Show badge only if items exist
+            <span
+              className="badge bg-danger ms-2"
+              id="cart_count"
+              style={{
+                position: "absolute",
+                top: "-5px",
+                right: "-10px",
+                fontSize: "12px",
+              }}
+            >
+              {cartItems.length}
+            </span>
+          )}
+        </Link>
 
         {user ? (
           <div className="ms-4 dropdown">
@@ -85,18 +100,15 @@ const Header = () => {
               aria-labelledby="dropDownMenuButton"
             >
               <Link className="dropdown-item" to="/admin/dashboard">
-                {" "}
-                Dashboard{" "}
+                Dashboard
               </Link>
 
               <Link className="dropdown-item" to="/me/orders">
-                {" "}
-                Orders{" "}
+                Orders
               </Link>
 
               <Link className="dropdown-item" to="/me/profile">
-                {" "}
-                Profile{" "}
+                Profile
               </Link>
 
               <Link
@@ -104,16 +116,14 @@ const Header = () => {
                 to="/"
                 onClick={logoutHandler}
               >
-                {" "}
-                Logout{" "}
+                Logout
               </Link>
             </div>
           </div>
         ) : (
           !isLoading && (
             <Link to="/login" className="btn ms-4" id="login_btn">
-              {" "}
-              Login{" "}
+              Login
             </Link>
           )
         )}
