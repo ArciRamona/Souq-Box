@@ -1,11 +1,29 @@
 import React from "react";
 import MetaData from "../layout/MetaData";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { addToCart, removeFromCart } from "../../redux/features/cartSlice";
 
 const Cart = () => {
-  // ✅ Pass selector function to useSelector to access `cartItems`
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+
+  const increseQty = (item) => {
+    if (item.quantity >= item.stock) return; // Prevent exceeding stock
+
+    dispatch(addToCart({ ...item, quantity: item.quantity + 1 })); // ✅ Pass updated quantity
+  };
+
+  const decreseQty = (item) => {
+    if (item.quantity <= 1) return; // Prevent going below 1
+
+    dispatch(addToCart({ ...item, quantity: item.quantity - 1 })); // ✅ Pass updated quantity
+  };
+
+  // ✅ Define removeItemFromCart function
+  const removeItemFromCart = (itemId) => {
+    dispatch(removeFromCart(itemId)); // ✅ Dispatch remove action
+  };
 
   return (
     <>
@@ -20,11 +38,10 @@ const Cart = () => {
 
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8">
-              {/* <!-- Cart Items --> */}
               {cartItems.map((item) => (
-                <>
+                <div key={item.id}>
                   <hr />
-                  <div className="cart-item" key={item.id}>
+                  <div className="cart-item">
                     <div className="row">
                       <div className="col-4 col-lg-3">
                         <img
@@ -42,25 +59,38 @@ const Cart = () => {
                       </div>
                       <div className="col-4 col-lg-3 mt-4 mt-lg-0">
                         <div className="stockCounter d-inline">
-                          <span className="btn btn-danger minus"> - </span>
+                          <span
+                            className="btn btn-danger minus"
+                            onClick={() => decreseQty(item)}
+                          >
+                            {" "}
+                            -{" "}
+                          </span>
                           <input
                             type="number"
                             className="form-control count d-inline"
                             value={item?.quantity}
                             readOnly
                           />
-                          <span className="btn btn-primary plus"> + </span>
+                          <span
+                            className="btn btn-primary plus"
+                            onClick={() => increseQty(item)}
+                          >
+                            {" "}
+                            +{" "}
+                          </span>
                         </div>
                       </div>
                       <div className="col-4 col-lg-1 mt-4 mt-lg-0">
                         <i
                           id="delete_cart_item"
                           className="fa fa-trash btn btn-danger"
+                          onClick={() => removeItemFromCart(item.id)} // ✅ Now this is defined
                         ></i>
                       </div>
                     </div>
                   </div>
-                </>
+                </div>
               ))}
             </div>
 
