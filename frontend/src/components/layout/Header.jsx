@@ -72,7 +72,7 @@ const Header = () => {
                   top: "-29px",
                   right: "-17px",
                   fontSize: "12px",
-                  padding: "4px 4.5px",
+                  padding: "4px 6.5px",
                   borderRadius: "50%",
                   minWidth: "15px",
                   minHeight: "15px",

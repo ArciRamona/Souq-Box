@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React from "react";
 import MetaData from "../layout/MetaData";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToCart } from "../../redux/features/cartSlice";
+import { addToCart, removeFromCart } from "../../redux/features/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -21,9 +22,9 @@ const Cart = () => {
   };
 
   // ✅ Define removeItemFromCart function
-  // const removeItemFromCart = (itemId) => {
-  //   dispatch(removeFromCart(itemId)); // ✅ Dispatch remove action
-  // };
+  const removeItemFromCart = (itemId) => {
+    dispatch(removeFromCart(itemId)); // ✅ Dispatch remove action
+  };
 
   return (
     <>
@@ -114,7 +115,8 @@ const Cart = () => {
                         (acc, item) => acc + item.price * item.quantity,
                         0
                       )
-                      .toFixed(2)}
+                      .toFixed(2)}{" "}
+                    //fixed the two value after decimal
                   </span>
                 </p>
                 <hr />
