@@ -2,7 +2,7 @@ import React from "react";
 import MetaData from "../layout/MetaData";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToCart, removeFromCart } from "../../redux/features/cartSlice";
+import { addToCart } from "../../redux/features/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,9 @@ const Cart = () => {
   };
 
   // ✅ Define removeItemFromCart function
-  const removeItemFromCart = (itemId) => {
-    dispatch(removeFromCart(itemId)); // ✅ Dispatch remove action
-  };
+  // const removeItemFromCart = (itemId) => {
+  //   dispatch(removeFromCart(itemId)); // ✅ Dispatch remove action
+  // };
 
   return (
     <>
