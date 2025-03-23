@@ -20,6 +20,9 @@ import UploadAvatar from "./components/user/UploadAvatar.jsx";
 import UpdatePassword from "./components/user/UpdatePassword.jsx";
 import ForgotPassword from "./components/auth/ForgotPassword.jsx";
 import Cart from "./components/cart/Cart.jsx";
+import Shipping from "./components/cart/Shipping.jsx";
+import CartSync from "./components/layout/CartSync.js";
+import CartLoader from "./components/layout/CartLoader.js";
 
 function App() {
   return (
@@ -36,6 +39,10 @@ function MainContent() {
   return (
     <div className="App">
       <Toaster position="top-center" reverseOrder={false} />
+
+      <CartLoader />
+      <CartSync />
+      {/* ✅ Load cart from localStorage on login */}
 
       {/* Show Header except on Register page */}
       {!hideHeader && <Header />}
@@ -90,11 +97,21 @@ function MainContent() {
             path="/cart"
             element={
               <ProtectedRoute>
-                {" "}
-                <Cart />{" "}
+                <Cart />
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/shipping"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <Shipping />{" "}
+              </ProtectedRoute>
+            }
+          />
+          {/* A ProtectedRoute (also called a Private Route) is a route in your React app that requires the user to be authenticated (logged in) before they can access it. */}
         </Routes>
       </div>
 

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../redux/api/authApi";
 import { logoutSuccess } from "../../redux/features/userSlice";
+import { clearCart } from "../../redux/features/cartSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,17 +14,22 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { cartItems } = useSelector((state) => state.cart); // ✅ Define cartItems before using it
+  const { cartItems } = useSelector((state) => state.cart); //  Define cartItems before using it
 
   // ✅ Fix: Calculate total quantity after defining cartItems
   const totalCartItems = cartItems.reduce(
     (acc, item) => acc + item.quantity,
     0
   );
-
   const logoutHandler = async () => {
     try {
-      await logout().unwrap();
+      // ✅ Clear cart first while user ID still exists
+      if (user?.id) {
+        localStorage.removeItem(`cartItems_${user.id}`);
+      }
+
+      await logout().unwrap(); //
+      dispatch(clearCart());
       dispatch(logoutSuccess());
       localStorage.removeItem("token");
       navigate("/login", { replace: true });

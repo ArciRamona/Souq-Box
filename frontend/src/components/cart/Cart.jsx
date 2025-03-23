@@ -2,12 +2,13 @@
 import React from "react";
 import MetaData from "../layout/MetaData";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addToCart, removeFromCart } from "../../redux/features/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
 
   const increseQty = (item) => {
     if (item.quantity >= item.stock) return; // Prevent exceeding stock
@@ -24,6 +25,10 @@ const Cart = () => {
   // ✅ Define removeItemFromCart function
   const removeItemFromCart = (itemId) => {
     dispatch(removeFromCart(itemId)); // ✅ Dispatch remove action
+  };
+
+  const checkoutHandler = () => {
+    navigate("/shipping");
   };
 
   return (
@@ -116,11 +121,15 @@ const Cart = () => {
                         0
                       )
                       .toFixed(2)}{" "}
-                    //fixed the two value after decimal
+                    {/* fixed the two value after decimal */}
                   </span>
                 </p>
                 <hr />
-                <button id="checkout_btn" className="btn btn-primary w-100">
+                <button
+                  id="checkout_btn"
+                  className="btn btn-primary w-100"
+                  onClick={checkoutHandler}
+                >
                   Check out
                 </button>
               </div>
