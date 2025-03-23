@@ -4,18 +4,18 @@ import { loadCart } from "../../redux/features/cartSlice";
 
 const CartLoader = () => {
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector((state) => state.auth); // or state.userSlice
-  const userId = user?._id;
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?._id || user?.id;
 
   useEffect(() => {
-    if (isAuthenticated && userId) {
+    if (userId) {
       const savedCart = localStorage.getItem(`cartItems_${userId}`);
       if (savedCart) {
         dispatch(loadCart(JSON.parse(savedCart)));
-        console.log("🟢 Loaded cart for:", userId);
+        console.log("🟢 Loaded cart from localStorage for:", userId);
       }
     }
-  }, [userId, isAuthenticated, dispatch]);
+  }, [userId, dispatch]);
 
   return null;
 };
