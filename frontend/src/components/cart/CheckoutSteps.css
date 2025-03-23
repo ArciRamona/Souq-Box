@@ -1,0 +1,57 @@
+.checkout-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* spacing between steps */
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Example styles */
+.triangle2-active,
+.triangle-active,
+.triangle2-incomplete,
+.triangle-incomplete {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}
+
+.triangle2-active {
+  border-bottom: 15px solid #f90;
+}
+
+.triangle-active {
+  border-top: 15px solid #f90;
+}
+
+.triangle2-incomplete {
+  border-bottom: 15px solid #ccc;
+}
+
+.triangle-incomplete {
+  border-top: 15px solid #ccc;
+}
+
+.step {
+  margin: 5px 0;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.active-step {
+  color: #f90;
+}
+
+.incomplete {
+  color: #ccc;
+}

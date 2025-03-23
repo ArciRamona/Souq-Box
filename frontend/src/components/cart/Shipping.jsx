@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveShippingInfo } from "../../redux/features/cartSlice";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
+import CheckoutSteps from "./CheckoutSteps";
+
 const Shipping = () => {
   const countriesList = Object.values(countries);
 
@@ -39,6 +41,9 @@ const Shipping = () => {
   return (
     <>
       <MetaData title={"Shipping Info"} />
+      {/* Checkout Steps Component */}
+      <CheckoutSteps shipping />
+
       <div
         className="d-flex justify-content-center align-items-center"
         style={{ minHeight: "80vh" }}
