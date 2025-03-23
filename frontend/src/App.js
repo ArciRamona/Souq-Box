@@ -23,6 +23,7 @@ import Cart from "./components/cart/Cart.jsx";
 import Shipping from "./components/cart/Shipping.jsx";
 import CartSync from "./components/layout/CartSync.js";
 import CartLoader from "./components/layout/CartLoader.js";
+import ConfirmOrder from "./components/cart/ConfirmOrder.jsx";
 
 function App() {
   return (
@@ -108,6 +109,16 @@ function MainContent() {
               <ProtectedRoute>
                 {" "}
                 <Shipping />{" "}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/confirm_order"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <ConfirmOrder />{" "}
               </ProtectedRoute>
             }
           />
