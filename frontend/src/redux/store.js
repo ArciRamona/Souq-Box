@@ -7,6 +7,7 @@ import cartReducer from "./features/cartSlice"; // ✅ Import cart reducer
 import { productApi } from "./api/productsApi";
 import { authApi } from "./api/authApi";
 import { userApi } from "./api/userApi";
+import { orderApi } from "./api/orderApi";
 
 // Redux Persist Configuration
 const persistConfig = {
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   [productApi.reducerPath]: productApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
+  [orderApi.reducerPath]: orderApi.reducer,
 });
 
 // Configure store
@@ -33,7 +35,12 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, // Required for Redux Persist
-    }).concat(productApi.middleware, authApi.middleware, userApi.middleware),
+    }).concat(
+      productApi.middleware,
+      authApi.middleware,
+      userApi.middleware,
+      orderApi.middleware
+    ),
 });
 
 // Persistor to manage state persistence

@@ -3,6 +3,7 @@ import Header from "./components/layout/Header.jsx";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
 import Home from "./components/Home.jsx";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import {
   BrowserRouter as Router,
@@ -24,6 +25,7 @@ import Shipping from "./components/cart/Shipping.jsx";
 import CartSync from "./components/layout/CartSync.js";
 import CartLoader from "./components/layout/CartLoader.js";
 import ConfirmOrder from "./components/cart/ConfirmOrder.jsx";
+import PaymentMethod from "./components/cart/PaymentMethod.jsx";
 
 function App() {
   return (
@@ -119,6 +121,16 @@ function MainContent() {
               <ProtectedRoute>
                 {" "}
                 <ConfirmOrder />{" "}
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/payment_method"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <PaymentMethod />{" "}
               </ProtectedRoute>
             }
           />
