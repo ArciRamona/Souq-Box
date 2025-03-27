@@ -8,19 +8,49 @@ export const stripeCheckoutSession = catchAsyncErrors(
     const body = req.body;
 
     //  Map order items to Stripe line items
-    const line_items = body?.orderItems?.map((item) => ({
+    // const line_items = body?.orderItems?.map((item) => ({
+    //   price_data: {
+    //     currency: "usd",
+    //     product_data: {
+    //       name: item.name,
+    //       images: [item.image],
+    //       metadata: { productId: item.product },
+    //     },
+    //     unit_amount: item?.price * 100,
+    //   },
+
+    //   quantity: item?.quantity,
+    // }));
+    const orderItems = body?.orderItems || [];
+
+    // Add shipping fee as a separate line item (e.g., $20)
+    const shippingFee = {
       price_data: {
         currency: "usd",
         product_data: {
-          name: item.name,
-          images: [item.image],
-          metadata: { productId: item.product },
+          name: "Shipping Fee",
         },
-        unit_amount: item?.price * 100,
+        unit_amount: 2000, // $20 shipping in cents
       },
+      quantity: 1,
+    };
 
-      quantity: item?.quantity,
-    }));
+    // Combine product items + shipping fee
+    const line_items = [
+      ...orderItems.map((item) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.name,
+            images: [item.image],
+            metadata: { productId: item.product },
+          },
+          unit_amount: item.price * 100,
+        },
+        quantity: item.quantity,
+      })),
+      shippingFee,
+    ];
 
     const shippingInfo = body?.shippingInfo;
     const shipping_rate =
@@ -29,6 +59,25 @@ export const stripeCheckoutSession = catchAsyncErrors(
         : "shr_1R73CpDwcsyCCZwROHXzrW4T";
 
     // Create Stripe Checkout Session
+    // const session = await stripe.checkout.sessions.create({
+    //   payment_method_types: ["card"],
+    //   mode: "payment",
+    //   success_url: `${process.env.FRONTEND_URL}/me/orders`,
+    //   cancel_url: `${process.env.FRONTEND_URL}`,
+    //   customer_email: req?.user?.email,
+    //   client_reference_id: req?.user?._id.toString(),
+    //   metadata: {
+    //     ...shippingInfo,
+    //     itemsPrice: body?.itemsPrice,
+    //   },
+    //   shipping_options: [
+    //     {
+    //       shipping_rate,
+    //     },
+    //   ],
+    //   line_items,
+    // });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -40,12 +89,7 @@ export const stripeCheckoutSession = catchAsyncErrors(
         ...shippingInfo,
         itemsPrice: body?.itemsPrice,
       },
-      shipping_options: [
-        {
-          shipping_rate,
-        },
-      ],
-      line_items,
+      line_items, // ✅ use the one that includes the shipping fee
     });
 
     console.log("Stripe Session Created:", session.url);

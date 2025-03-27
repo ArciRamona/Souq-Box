@@ -22,9 +22,10 @@ const PaymentMethod = () => {
 
   useEffect(() => {
     if (checkoutData) {
-      console.log(checkoutData);
-
-      navigate(checkoutData?.url);
+      toast.success("Redirecting to Stripe Checkout...");
+      setTimeout(() => {
+        window.location.href = checkoutData.url;
+      }, 1000);
     }
 
     if (checkoutError) {
