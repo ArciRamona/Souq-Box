@@ -3,7 +3,6 @@ import Header from "./components/layout/Header.jsx";
 import { Toaster } from "react-hot-toast";
 import "./App.css";
 import Home from "./components/Home.jsx";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import {
   BrowserRouter as Router,

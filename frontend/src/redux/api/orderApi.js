@@ -21,7 +21,18 @@ export const orderApi = createApi({
         };
       },
     }),
+    stripeCheckoutSession: builder.mutation({
+      // 4 stripe -> cart -> payment Method
+      query(body) {
+        return {
+          url: "/payment/checkout_session",
+          method: "POST",
+          body,
+        };
+      },
+    }),
   }),
 });
 
-export const { useCreateNewOrderMutation } = orderApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
+export const { useCreateNewOrderMutation, useStripeCheckoutSessionMutation } =
+  orderApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

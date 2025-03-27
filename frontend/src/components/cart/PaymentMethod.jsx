@@ -6,6 +6,7 @@ import { calculateOrderCost } from "../../helpers/helpers";
 import { useCreateNewOrderMutation } from "../../redux/api/orderApi";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useStripeCheckoutSessionMutation } from "../../redux/api/orderApi";
 
 const PaymentMethod = () => {
   // ✅ STATE: To manage selected radio button
@@ -16,6 +17,21 @@ const PaymentMethod = () => {
   const [createNewOrder, { isLoading, error, isSuccess }] =
     useCreateNewOrderMutation();
 
+  const [stripeCheckoutSession, { data: checkoutData, error: checkoutError }] =
+    useStripeCheckoutSessionMutation();
+
+  useEffect(() => {
+    if (checkoutData) {
+      console.log(checkoutData);
+
+      navigate(checkoutData?.url);
+    }
+
+    if (checkoutError) {
+      toast.error(checkoutError?.data?.message || "Stripe checkout failed");
+    }
+  }, [checkoutData, checkoutError, navigate]);
+
   useEffect(() => {
     if (error) {
       toast.error(error?.data?.message);
@@ -24,7 +40,7 @@ const PaymentMethod = () => {
     if (isSuccess) {
       navigate("/");
     }
-  }, [error, isSuccess, navigate]);
+  }, [error, isSuccess, navigate, isLoading]);
 
   // ✅ FORM SUBMIT HANDLER
   const submitHandler = (e) => {
@@ -58,8 +74,16 @@ const PaymentMethod = () => {
       createNewOrder(orderData);
     }
     if (paymentMethod === "Card") {
-      // Stripe Payment
-      alert("Card");
+      // Stripe checkout
+      const orderData = {
+        shippingInfo,
+        orderItems,
+        itemsPrice,
+        shippingAmount: shippingPrice,
+        taxAmount: taxPrice,
+        totalAmount: totalPrice,
+      };
+      stripeCheckoutSession(orderData);
     }
 
     if (paymentMethod === "PayPal") {
@@ -156,3 +180,8 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
+// 1 stripe -> to routes paymentss.js
+// Stripe Checkout Session, Tax & Shipping Rates
+// Create stripe checkout session => /api/v1/payment/checkout_session
+
+// ... means spread of shipping information

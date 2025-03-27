@@ -49,10 +49,13 @@ app.use(express.urlencoded({ extended: true })); // express.json connected from 
 import productRoutes from "./routes/products.js";
 import authRoutes from "./routes/auth.js";
 import orderRoutes from "./routes/order.js";
+import paymentRoutes from "./routes/paymentss.js"; // 3 stripe -> to frontend redux-> api -> to order.js
 
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", orderRoutes);
+app.use("/api/v1", paymentRoutes);
+
 // =================================================
 // Use your product routes here
 
