@@ -95,7 +95,7 @@ const orderSchema = new mongoose.Schema(
     },
     deliveredAt: Date,
   },
-  { timeseries: true }
+  { timestamps: true } // ✅ Correct usage for createdAt & updatedAt fields
 );
 
 export default mongoose.model("Order", orderSchema);

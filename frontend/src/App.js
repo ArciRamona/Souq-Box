@@ -25,6 +25,7 @@ import CartSync from "./components/layout/CartSync.js";
 import CartLoader from "./components/layout/CartLoader.js";
 import ConfirmOrder from "./components/cart/ConfirmOrder.jsx";
 import PaymentMethod from "./components/cart/PaymentMethod.jsx";
+import OrderSuccess from "./components/order/OrderSuccess.jsx";
 
 function App() {
   return (
@@ -133,6 +134,8 @@ function MainContent() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/me/orders" element={<OrderSuccess />} />
           {/* A ProtectedRoute (also called a Private Route) is a route in your React app that requires the user to be authenticated (logged in) before they can access it. */}
         </Routes>
       </div>

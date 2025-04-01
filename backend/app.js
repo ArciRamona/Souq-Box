@@ -21,7 +21,9 @@ process.on("uncaughtException", (err) => {
 
 // =================================================
 // Load environment variables from.env file.
+// Load .env BEFORE using process.env variables
 dotenv.config({ path: "backend/config/config.env" });
+
 // =================================================
 
 // =================================================
@@ -50,12 +52,14 @@ import productRoutes from "./routes/products.js";
 import authRoutes from "./routes/auth.js";
 import orderRoutes from "./routes/order.js";
 import paymentRoutes from "./routes/paymentss.js"; // 3 stripe -> to frontend redux-> api -> to order.js
+import webhookRoutes from "./routes/webhook.js";
 
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", orderRoutes);
 app.use("/api/v1", paymentRoutes);
-
+app.use("/api/v1", webhookRoutes);
+app.use("/api/v1", webhookRoutes);
 // =================================================
 // Use your product routes here
 
