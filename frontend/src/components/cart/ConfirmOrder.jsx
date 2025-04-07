@@ -79,7 +79,7 @@ const ConfirmOrder = () => {
             </p>
             <hr />
             <p>
-              Total: <span class="order-summary-values">${totalPrice}</span>
+              Total: <span className="order-summary-values">${totalPrice}</span>
             </p>
             <hr />
             <Link

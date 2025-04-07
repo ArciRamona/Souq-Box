@@ -6,6 +6,6 @@ import { stripeCheckoutSession } from "../controllers/paymentControllers.js";
 
 router
   .route("/payment/checkout_session")
-  .post(isAuthenticatedUser, stripeCheckoutSession);
+  .post(isAuthenticatedUser, stripeCheckoutSession); // ✅ Must be protected
 
 export default router;

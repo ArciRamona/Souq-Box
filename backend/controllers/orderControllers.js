@@ -5,6 +5,7 @@ import Order from "../models/order.js";
 import Product from "../models/products.js";
 import { getResetPasswordTemplate } from "../utils/emailTemplates.js";
 import ErrorHandler from "../utils/errorHandlers.js";
+import mongoose from "mongoose";
 
 // Create new Order = => /api/v1/orders/new
 export const newOrder = catchAsyncErrors(async (req, res, next) => {
@@ -116,5 +117,31 @@ export const deleteOrder = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+  });
+});
+
+// Get Order Details => /api/v1/orders/:id
+// export const getMyOrders = catchAsyncErrors(async (req, res, next) => {
+//   console.log("🔍 Fetching orders for user:", req.user._id);
+
+//   const orders = await Order.find({ user: req.user._id });
+
+//   console.log("📦 Orders returned:", orders.length);
+
+//   res.status(200).json({
+//     success: true,
+//     orders,
+//   });
+// });
+// @route   GET /api/v1/orders/me
+// @access  Private
+export const getMyOrders = catchAsyncErrors(async (req, res, next) => {
+  console.log("📥 User ID from req.user:", req.user?._id, typeof req.user?._id);
+
+  const orders = await Order.find({ user: req.user._id });
+
+  res.status(200).json({
+    success: true,
+    orders,
   });
 });

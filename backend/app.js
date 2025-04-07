@@ -30,6 +30,9 @@ dotenv.config({ path: "backend/config/config.env" });
 //Connecting to database
 connectDatabase();
 // =================================================
+// ✅ Place this before json() middleware (optional but safe)
+app.use("/api/v1", webhookRoutes);
+// Then apply other middlewares
 
 // =================================================
 // Middlewares
@@ -37,7 +40,6 @@ app.use(express.json({ limit: "5mb" }));
 app.use(upload.single("avatar")); // If you're handling file uploads
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Enable CORS (Cross-Origin Resource Sharing) for development if needed
 app.use(cors());
@@ -59,7 +61,7 @@ app.use("/api/v1", authRoutes);
 app.use("/api/v1", orderRoutes);
 app.use("/api/v1", paymentRoutes);
 app.use("/api/v1", webhookRoutes);
-app.use("/api/v1", webhookRoutes);
+
 // =================================================
 // Use your product routes here
 
@@ -70,6 +72,9 @@ const server = app.listen(process.env.PORT, () => {
     `Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`
   );
 });
+// app.listen(process.env.PORT, () => {
+//   console.log(`Server started on PORT: ${process.env.PORT} in ${process.env.NODE_ENV} mode.`);
+// });
 // =================================================
 
 // Define your endpoint

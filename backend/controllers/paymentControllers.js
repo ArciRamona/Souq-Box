@@ -7,35 +7,22 @@ export const stripeCheckoutSession = catchAsyncErrors(
   async (req, res, next) => {
     const body = req.body;
 
-    //  Map order items to Stripe line items
-    // const line_items = body?.orderItems?.map((item) => ({
-    //   price_data: {
-    //     currency: "usd",
-    //     product_data: {
-    //       name: item.name,
-    //       images: [item.image],
-    //       metadata: { productId: item.product },
-    //     },
-    //     unit_amount: item?.price * 100,
-    //   },
-
-    //   quantity: item?.quantity,
-    // }));
     const orderItems = body?.orderItems || [];
 
-    // Add shipping fee as a separate line item (e.g., $20)
+    // 🧠 INSERT HERE — check if user is authenticated
+    console.log("🧠 Stripe Checkout: Logged in user ID:", req.user?._id);
+
     const shippingFee = {
       price_data: {
         currency: "usd",
         product_data: {
           name: "Shipping Fee",
         },
-        unit_amount: 2000, // $20 shipping in cents
+        unit_amount: 2000,
       },
       quantity: 1,
     };
 
-    // Combine product items + shipping fee
     const line_items = [
       ...orderItems.map((item) => ({
         price_data: {
@@ -43,7 +30,9 @@ export const stripeCheckoutSession = catchAsyncErrors(
           product_data: {
             name: item.name,
             images: [item.image],
-            metadata: { productId: item.product },
+            metadata: {
+              productId: item.product,
+            },
           },
           unit_amount: item.price * 100,
         },
@@ -53,46 +42,47 @@ export const stripeCheckoutSession = catchAsyncErrors(
     ];
 
     const shippingInfo = body?.shippingInfo;
-    const shipping_rate =
-      body?.itemsPrice >= 200
-        ? "shr_1R73BWDwcsyCCZwRO17y3S9J"
-        : "shr_1R73CpDwcsyCCZwROHXzrW4T";
 
-    // Create Stripe Checkout Session
     // const session = await stripe.checkout.sessions.create({
     //   payment_method_types: ["card"],
     //   mode: "payment",
+    //   line_items,
     //   success_url: `${process.env.FRONTEND_URL}/me/orders`,
     //   cancel_url: `${process.env.FRONTEND_URL}`,
     //   customer_email: req?.user?.email,
-    //   client_reference_id: req?.user?._id.toString(),
+    //   client_reference_id: req.user._id.toString(), // ✅ This depends on above log being defined
     //   metadata: {
-    //     ...shippingInfo,
-    //     itemsPrice: body?.itemsPrice,
+    //     itemsPrice: body.itemsPrice,
+    //     shippingAmount: body.shippingAmount,
+    //     taxAmount: body.taxAmount,
+    //     address: shippingInfo?.address || "Default Address",
+    //     city: shippingInfo?.city || "Default City",
+    //     phoneNo: shippingInfo?.phoneNo || "0000000000",
+    //     zipCode: shippingInfo?.zipCode || "00000",
+    //     country: shippingInfo?.country || "US",
     //   },
-    //   shipping_options: [
-    //     {
-    //       shipping_rate,
-    //     },
-    //   ],
-    //   line_items,
     // });
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
+      line_items, // your mapped items here
       success_url: `${process.env.FRONTEND_URL}/me/orders`,
-      cancel_url: `${process.env.FRONTEND_URL}`,
-      customer_email: req?.user?.email,
-      client_reference_id: req?.user?._id.toString(),
+      cancel_url: `${process.env.FRONTEND_URL}/cart`,
+      customer_email: req.user?.email, // ✅ From JWT or session
+      client_reference_id: req.user?._id.toString(), // ✅ This will be used in webhook
       metadata: {
-        ...shippingInfo,
-        itemsPrice: body?.itemsPrice,
+        itemsPrice: body.itemsPrice,
+        shippingAmount: body.shippingAmount,
+        taxAmount: body.taxAmount,
+        address: shippingInfo.address,
+        city: shippingInfo.city,
+        phoneNo: shippingInfo.phoneNo,
+        zipCode: shippingInfo.zipCode,
+        country: shippingInfo.country,
       },
-      line_items, // ✅ use the one that includes the shipping fee
     });
 
-    console.log("Stripe Session Created:", session.url);
+    console.log("✅ Stripe Session Created:", session.url);
 
     res.status(200).json({
       url: session.url,

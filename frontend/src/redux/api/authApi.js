@@ -2,6 +2,8 @@
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"; //
 import { userApi } from "./userApi";
+import { setCredentials, setLoading, setUser } from "../features/authSlice.js";
+import { logoutUser } from "../features/authSlice.js";
 // Fetch all products Query
 export const authApi = createApi({
   // have to create here product API. In this file we will handle all the endpoints related to the product.
@@ -29,10 +31,18 @@ export const authApi = createApi({
       // Load logged in Users State
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled;
+          const { data } = await queryFulfilled;
+
+          dispatch(
+            setCredentials({
+              user: data.user,
+              token: data.token,
+            })
+          );
+
           await dispatch(userApi.endpoints.getMe.initiate(null));
         } catch (error) {
-          console.log(error);
+          console.log("Login error:", error);
         }
       },
     }),
@@ -47,18 +57,40 @@ export const authApi = createApi({
       },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled;
-          await dispatch(userApi.endpoints.getMe.initiate(null));
+          const { data } = await queryFulfilled;
+
+          // ✅ Store token and user temporarily
+          dispatch(
+            setCredentials({
+              user: data.user,
+              token: data.token,
+            })
+          );
+
+          // ✅ Then fetch full user info (in case token is valid but not complete)
+          const { data: user } = await dispatch(
+            userApi.endpoints.getMe.initiate(null)
+          ).unwrap();
+          dispatch(setUser(user));
         } catch (error) {
-          console.log(error);
+          dispatch(setLoading(false));
+          console.log("Login error:", error);
         }
       },
     }),
     logout: builder.mutation({
       query: () => ({
         url: "/logout",
-        method: "POST", // Use POST instead of GET
+        method: "POST",
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(logoutUser()); // ✅ Clear Redux state
+        } catch (error) {
+          console.log("Logout error:", error);
+        }
+      },
     }),
   }),
 });

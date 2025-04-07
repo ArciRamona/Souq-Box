@@ -9,28 +9,39 @@ import { setIsAuthenticated, setUser, setLoading } from "../features/userSlice";
 export const userApi = createApi({
   // have to create here product API. In this file we will handle all the endpoints related to the product.
   reducerPath: "userApi",
+  // baseQuery: fetchBaseQuery({
+  //   baseUrl: "/api/v1",
+  //   credentials: "include", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
+  // }),
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1",
-    credentials: "include", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
+    credentials: "include", // Only needed for cookies (not Bearer tokens)
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth?.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
+
   tagTypes: ["User"],
   endpoints: (builder) => ({
     getMe: builder.query({
       query: () => `/me`,
-      transformResponse: (result) => result.user, // Transformresponse a function to manilpulate the data returned by a query or mutation
+      transformResponse: (result) => result.user,
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log("Fetched User Data:", data);
-          dispatch(setUser(data));
-          dispatch(setIsAuthenticated(true));
-          dispatch(setLoading(false));
+
+          dispatch(setUser(data)); // ✅ Save user object
+          dispatch(setIsAuthenticated(true)); // ✅ Auth state
+          dispatch(setLoading(false)); // ✅ 🧠 MOST IMPORTANT: STOP LOADING
         } catch (error) {
-          dispatch(setLoading(false));
-          console.log("Error fetching user:", error);
+          dispatch(setLoading(false)); // ✅ Even on error, stop loading!
+          console.error("❌ Error fetching user:", error);
         }
       },
-      providesTags: ["User"],
     }),
     // Update User Profile
     updateProfile: builder.mutation({

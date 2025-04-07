@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import Search from "./Search";
 import { useGetMeQuery } from "../../redux/api/userApi";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +16,12 @@ const Header = () => {
 
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart); //  Define cartItems before using it
+
+  const { isAuthenticated, token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    console.log("🧠 Auth State", { user, token, isAuthenticated });
+  }, [user, token, isAuthenticated]);
 
   // ✅ Fix: Calculate total quantity after defining cartItems
   const totalCartItems = cartItems.reduce(

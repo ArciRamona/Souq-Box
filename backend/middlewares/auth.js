@@ -8,7 +8,9 @@ import jwt from "jsonwebtoken";
 // Check if the user is authenticated
 export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   // Ensure you have `cookie-parser` middleware setup in your app
-  const { token } = req.cookies;
+
+  const token =
+    req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
     return next(new ErrorHandler("Login first to access this resource", 401)); // 401 for unauthorized

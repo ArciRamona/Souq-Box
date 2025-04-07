@@ -3,6 +3,7 @@ import { authorizeRoles, isAuthenticatedUser } from "../middlewares/auth.js";
 import {
   allOrders,
   deleteOrder,
+  getMyOrders,
   getOrderDeatails,
   myOrders,
   newOrder,
@@ -12,10 +13,13 @@ import {
 const router = express.Router();
 
 router.route("/orders/new").post(isAuthenticatedUser, newOrder);
-router.route("/orders/:id").get(isAuthenticatedUser, getOrderDeatails);
 router.route("/me/orders").get(isAuthenticatedUser, myOrders);
+router.get("/orders/me", isAuthenticatedUser, getMyOrders);
+
+router.route("/orders/:id").get(isAuthenticatedUser, getOrderDeatails);
 
 router
+
   .route("/admin/orders")
   .get(isAuthenticatedUser, authorizeRoles("admin"), allOrders);
 
