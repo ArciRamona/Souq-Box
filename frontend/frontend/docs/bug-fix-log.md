@@ -1,4 +1,4 @@
-<!-- # 🐞 Debug Log: "Orders Not Showing After Payment"
+# 🐞 Debug Log: "Orders Not Showing After Payment"
 
 ## ❗ Problem Summary
 
@@ -107,4 +107,4 @@ Branch: `fix/orders-working-version`
 - Auth state persists after refresh
 - Protected routes function correctly
 
-👏 Victory after 4 days of debugging! -->
+👏 Victory after 4 days of debugging!
