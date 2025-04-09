@@ -28,6 +28,7 @@ import PaymentMethod from "./components/cart/PaymentMethod.jsx";
 import OrderSuccess from "./components/order/OrderSuccess.jsx";
 import MyOrders from "./components/order/MyOrders.jsx";
 import AuthLoader from "./components/auth/AuthoLoader.jsx";
+import OrderDetails from "./components/order/OrderDetails.jsx";
 
 function App() {
   return (
@@ -146,6 +147,15 @@ function MainContent() {
             element={
               <ProtectedRoute>
                 <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/me/orders/:id"
+            element={
+              <ProtectedRoute>
+                <OrderDetails />
               </ProtectedRoute>
             }
           />

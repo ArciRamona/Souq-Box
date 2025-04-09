@@ -60,6 +60,9 @@ export const orderApi = createApi({
         method: "GET",
       }),
     }),
+    orderDetails: builder.query({
+      query: (id) => `/orders/${id}`,
+    }),
   }),
 });
 
@@ -67,4 +70,5 @@ export const {
   useCreateNewOrderMutation,
   useStripeCheckoutSessionMutation,
   useGetMyOrdersQuery,
+  useOrderDetailsQuery,
 } = orderApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

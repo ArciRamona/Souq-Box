@@ -6,11 +6,18 @@ import { useGetMyOrdersQuery } from "../../redux/api/orderApi.js";
 import MetaData from "../layout/MetaData";
 import toast from "react-hot-toast";
 import Loader from "../layout/Loader.jsx";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../redux/features/cartSlice.js";
 
 const MyOrders = () => {
   //   const { user } = useSelector((state) => state.auth);
-
+  const navigate = useNavigate();
   const { data, isLoading, error } = useGetMyOrdersQuery();
+
+  const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const ordersSuccess = searchParams.get("order_success");
 
   useEffect(() => {
     console.log("🧾 Orders data from API:", data); // Add this
@@ -24,7 +31,12 @@ const MyOrders = () => {
     if (error) {
       toast.error(error.data?.message || "Failed to fetch orders");
     }
-  }, [error]);
+
+    if (ordersSuccess) {
+      dispatch(clearCart());
+      navigate("/me/orders");
+    }
+  }, [error, ordersSuccess, dispatch, navigate]);
 
   if (isLoading) return <Loader />;
   // if (!data?.orders?.length) {
@@ -58,6 +70,23 @@ const MyOrders = () => {
                   <td>{order.orderStatus}</td>
                   <td>${order.totalAmount.toFixed(2)}</td>
                   <td>{order.paymentInfo.status}</td>
+                  <td>
+                    <Link
+                      to={`/me/orders/${order._id}`}
+                      className="btn btn-primary btn-sm me-2"
+                      title="View Order"
+                    >
+                      <i className="fa fa-eye"></i>
+                    </Link>
+
+                    <Link
+                      to={`/invoice/order/${order._id}`}
+                      className="btn btn-success btn-sm"
+                      title="Download Invoice"
+                    >
+                      <i className="fa fa-download"></i>
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
