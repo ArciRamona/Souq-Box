@@ -66,7 +66,7 @@ export const stripeCheckoutSession = catchAsyncErrors(
       payment_method_types: ["card"],
       mode: "payment",
       line_items, // your mapped items here
-      success_url: `${process.env.FRONTEND_URL}/me/orders`,
+      success_url: `${process.env.FRONTEND_URL}/me/orders?order_success=true`,
       cancel_url: `${process.env.FRONTEND_URL}/cart`,
       customer_email: req.user?.email, // ✅ From JWT or session
       client_reference_id: req.user?._id.toString(), // ✅ This will be used in webhook
@@ -82,7 +82,10 @@ export const stripeCheckoutSession = catchAsyncErrors(
       },
     });
 
-    console.log("✅ Stripe Session Created:", session.url);
+    console.log(
+      "🧾 Stripe success_url:",
+      `${process.env.FRONTEND_URL}/orders/me?order_success=true`
+    );
 
     res.status(200).json({
       url: session.url,

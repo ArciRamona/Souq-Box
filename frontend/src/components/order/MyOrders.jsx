@@ -9,6 +9,7 @@ import Loader from "../layout/Loader.jsx";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../redux/features/cartSlice.js";
+import { useSelector } from "react-redux";
 
 const MyOrders = () => {
   //   const { user } = useSelector((state) => state.auth);
@@ -17,7 +18,7 @@ const MyOrders = () => {
 
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const ordersSuccess = searchParams.get("order_success");
+  const orderSuccess = searchParams.get("order_success");
 
   useEffect(() => {
     console.log("🧾 Orders data from API:", data); // Add this
@@ -31,12 +32,19 @@ const MyOrders = () => {
     if (error) {
       toast.error(error.data?.message || "Failed to fetch orders");
     }
+  }, [error]);
 
-    if (ordersSuccess) {
+  const { user } = useSelector((state) => state.auth); // Access current user
+
+  useEffect(() => {
+    if (orderSuccess === "true") {
       dispatch(clearCart());
-      navigate("/me/orders");
+      localStorage.removeItem("cartItems");
+      if (user?._id) localStorage.removeItem(`cartItems_${user._id}`);
+      toast.success("🛒 Cart cleared after order");
+      navigate("/orders/me", { replace: true }); // ✅ Clear the param after
     }
-  }, [error, ordersSuccess, dispatch, navigate]);
+  }, [orderSuccess, dispatch, navigate, user?._id]);
 
   if (isLoading) return <Loader />;
   // if (!data?.orders?.length) {

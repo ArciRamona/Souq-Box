@@ -39,7 +39,8 @@ const PaymentMethod = () => {
     }
 
     if (isSuccess) {
-      navigate("/me/orders?order_success=true");
+      sessionStorage.setItem("orderSuccess", "true");
+      navigate("/me/orders");
     }
   }, [error, isSuccess, navigate, isLoading]);
 

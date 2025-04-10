@@ -12,7 +12,7 @@ const OrderSuccess = () => {
           Thank you for your order. Your payment was successful, and we’re
           preparing your items.
         </p>
-        <Link to="/orders/me/" className="btn btn-primary mt-4">
+        <Link to="/orders/me?order_success=true" className="btn btn-primary">
           View My Orders
         </Link>
       </div>

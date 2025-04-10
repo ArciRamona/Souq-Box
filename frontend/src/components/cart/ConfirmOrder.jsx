@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { calculateOrderCost } from "../../helpers/helpers";
 import CheckoutSteps from "./CheckoutSteps";
+import { useStripeCheckoutSessionMutation } from "../../redux/api/orderApi";
+import toast from "react-hot-toast";
 
 const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
@@ -12,6 +14,25 @@ const ConfirmOrder = () => {
   const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
     calculateOrderCost(cartItems);
 
+  const [stripeCheckoutSession] = useStripeCheckoutSessionMutation();
+
+  const handleStripePayment = async () => {
+    sessionStorage.setItem("orderSuccess", "true"); // ✅ Set the flag
+
+    try {
+      const { data } = await stripeCheckoutSession({
+        orderItems: cartItems,
+        shippingInfo,
+        itemsPrice,
+        shippingAmount: shippingPrice,
+        taxAmount: taxPrice,
+        totalAmount: totalPrice,
+      });
+      window.location.href = data.url; // ✅ Redirects to Stripe Checkout
+    } catch (error) {
+      toast.error("Stripe checkout failed");
+    }
+  };
   return (
     <>
       <MetaData title={"Confirm Order Info"} />
@@ -90,6 +111,13 @@ const ConfirmOrder = () => {
               {" "}
               Proceed to Payment
             </Link>
+
+            <button
+              onClick={handleStripePayment}
+              className="btn btn-dark w-100 mt-3"
+            >
+              Pay with Card (Stripe)
+            </button>
           </div>
         </div>
       </div>
