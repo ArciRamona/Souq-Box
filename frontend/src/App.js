@@ -29,6 +29,7 @@ import OrderSuccess from "./components/order/OrderSuccess.jsx";
 import MyOrders from "./components/order/MyOrders.jsx";
 import AuthLoader from "./components/auth/AuthoLoader.jsx";
 import OrderDetails from "./components/order/OrderDetails.jsx";
+import Invoice from "./components/invoice/invoice.jsx";
 
 function App() {
   return (
@@ -156,6 +157,15 @@ function MainContent() {
             element={
               <ProtectedRoute>
                 <OrderDetails />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/invoice/orders/:id"
+            element={
+              <ProtectedRoute>
+                <Invoice />
               </ProtectedRoute>
             }
           />
