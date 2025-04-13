@@ -35,7 +35,22 @@ export const productApi = createApi({
     getProductDetails: builder.query({
       query: (id) => `/products/${id}`,
     }),
+
+    sumbitReview: builder.mutation({
+      // submit Review
+      query(body) {
+        return {
+          url: "/reviews", // TODO Seet the routes products.js if same spelling
+          method: "PUT",
+          body,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductDetailsQuery } = productApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
+export const {
+  useGetProductsQuery,
+  useGetProductDetailsQuery,
+  useSumbitReviewMutation,
+} = productApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

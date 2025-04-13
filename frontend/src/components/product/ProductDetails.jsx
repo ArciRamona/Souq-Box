@@ -8,6 +8,8 @@ import StarRatings from "react-star-ratings";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cartSlice";
 import MetaData from "../layout/MetaData";
+import { useSelector } from "react-redux";
+import NewReviews from "../reviews/NewReviews.jsx";
 const ProductDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -17,6 +19,8 @@ const ProductDetails = () => {
   );
   const product = data?.product;
   const [activeImg, setActiveImg] = useState("");
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setActiveImg(
@@ -164,10 +168,13 @@ const ProductDetails = () => {
           <p id="product_seller mb-3">
             Sold by: <strong>{product?.seller}</strong>
           </p>
-
-          <div className="alert alert-danger my-5" type="alert">
-            Login to post your review.
-          </div>
+          {isAuthenticated ? (
+            <NewReviews productId={product?._id} />
+          ) : (
+            <div className="alert alert-danger my-5" type="alert">
+              Login to post your review.
+            </div>
+          )}
         </div>
       </div>
     </>
