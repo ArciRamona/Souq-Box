@@ -10,6 +10,7 @@ import { addToCart } from "../../redux/features/cartSlice";
 import MetaData from "../layout/MetaData";
 import { useSelector } from "react-redux";
 import NewReviews from "../reviews/NewReviews.jsx";
+import ListReviews from "../reviews/ListReviews.jsx";
 const ProductDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -177,6 +178,9 @@ const ProductDetails = () => {
           )}
         </div>
       </div>
+      {product?.reviews?.length > 0 && (
+        <ListReviews reviews={product?.reviews} />
+      )}
     </>
   );
 };

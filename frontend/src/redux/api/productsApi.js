@@ -9,6 +9,7 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
   }),
+  tagTypes: ["Product"], // Tagging the product and if edit the review no need to reload to appear it will automatically paste into your product review
   keepUnusedDataFor: 30,
 
   // Define all the endpoints here.
@@ -34,6 +35,7 @@ export const productApi = createApi({
     }),
     getProductDetails: builder.query({
       query: (id) => `/products/${id}`,
+      providesTags: ["Product"], // Tagging the product and if edit the review no need to reload to appear it will automatically paste into your product review
     }),
 
     sumbitReview: builder.mutation({
@@ -45,6 +47,7 @@ export const productApi = createApi({
           body,
         };
       },
+      invalidatesTags: ["Product"],
     }),
   }),
 });

@@ -48,7 +48,9 @@ export const newProduct = catchAsyncErrors(async (req, res) => {
 //routes that will give me deatails of one product by ID.
 //Get single product details => /api/v1/products/:id
 export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
-  const product = await Product.findById(req?.params?.id); //Optional Chaining Operator
+  const product = await Product.findById(req?.params?.id).populate(
+    "reviews.user"
+  ); //Optional Chaining Operator
 
   if (!product) {
     return next(new ErrorHandler("Product not found, 400")); //Next is a middleware that is provided by Express
