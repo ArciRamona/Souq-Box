@@ -2,6 +2,7 @@
 
 import express from "express";
 import {
+  canUserReview,
   createProductReview,
   deleteProduct,
   deleteProductReview,
@@ -38,5 +39,7 @@ router
 router
   .route("/admin/reviews")
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProductReview); //Authorized only for admin
+
+router.route("/can_review").get(isAuthenticatedUser, canUserReview);
 
 export default router;

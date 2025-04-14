@@ -3,6 +3,7 @@ import StarRatings from "react-star-ratings";
 import { useSumbitReviewMutation } from "../../redux/api/productsApi";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
+import { useCanUserReviewQuery } from "../../redux/api/productsApi";
 
 const Reviews = ({ productId }) => {
   const [rating, setRating] = useState(0);
@@ -15,6 +16,16 @@ const Reviews = ({ productId }) => {
     submitReview(reviewData);
   };
 
+  const { data } = useCanUserReviewQuery(productId);
+  const canReview = data?.canReview;
+
+  useEffect(() => {
+    if (error) {
+      console.log("❌ Review check error:", error);
+      toast.error("Unable to check review permission");
+    }
+  }, [error]);
+
   useEffect(() => {
     if (error) {
       toast.error(error?.data?.message || "An unexpected error occurred");
@@ -26,15 +37,17 @@ const Reviews = ({ productId }) => {
   }, [error, isSuccess]);
   return (
     <div>
-      <button
-        id="review_btn"
-        type="button"
-        class="btn btn-primary mt-4"
-        data-bs-toggle="modal"
-        data-bs-target="#ratingModal"
-      >
-        Submit Your Review
-      </button>
+      {canReview && (
+        <button
+          id="review_btn"
+          type="button"
+          class="btn btn-primary mt-4"
+          data-bs-toggle="modal"
+          data-bs-target="#ratingModal"
+        >
+          Submit Your Review
+        </button>
+      )}
 
       <div class="row mt-2 mb-5">
         <div class="rating w-50">

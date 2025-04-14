@@ -1,9 +1,11 @@
 //Here I will write all  the controllers and all the logic for our product resource.
+// Endpoint
 
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import Product from "../models/products.js";
 import APIFilters from "../utils/apiFilters.js";
 import ErrorHandler from "../utils/errorHandlers.js";
+import Order from "../models/order.js";
 
 import mongoose from "mongoose";
 
@@ -199,4 +201,24 @@ export const deleteProductReview = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
+});
+
+// Can user review => /api/v1/can_review
+export const canUserReview = catchAsyncErrors(async (req, res, next) => {
+  const orders = await Order.find({
+    user: req.user._id,
+    "orderItems.product": req.query.productId,
+  });
+
+  if (orders.length === 0) {
+    return res.status(200).json({ canReview: false });
+  }
+
+  console.log("🔍 Checking review eligibility for user:", req.user._id);
+  console.log("🛒 Orders found:", orders.length);
+  res.status(200).json({
+    canReview: true,
+  });
+  {
+  }
 });
