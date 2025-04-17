@@ -530,3 +530,9 @@ footer {
   border-radius: 0.3rem;
   color: #f90;
 }
+
+.dropdown-item.active {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #000;
+}

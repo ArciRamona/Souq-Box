@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Search from "./Search";
 import { useGetMeQuery } from "../../redux/api/userApi";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useLogoutMutation } from "../../redux/api/authApi";
 import { logoutSuccess } from "../../redux/features/userSlice";
 import { clearCart } from "../../redux/features/cartSlice";
@@ -18,6 +18,7 @@ const Header = () => {
   const { cartItems } = useSelector((state) => state.cart); //  Define cartItems before using it
 
   const { isAuthenticated, token } = useSelector((state) => state.auth);
+  const location = useLocation();
 
   useEffect(() => {
     console.log("🧠 Auth State", { user, token, isAuthenticated });
@@ -130,13 +131,31 @@ const Header = () => {
               className="dropdown-menu w-100"
               aria-labelledby="dropDownMenuButton"
             >
-              <Link className="dropdown-item" to="/admin/dashboard">
-                Dashboard
-              </Link>
-              <Link className="dropdown-item" to="/me/orders">
+              {user?.role === "admin" && (
+                <Link
+                  className={`dropdown-item ${
+                    location.pathname === "/admin/dashboard" ? "active" : ""
+                  }`}
+                  to="/admin/dashboard"
+                >
+                  Dashboard
+                </Link>
+              )}
+
+              <Link
+                className={`dropdown-item ${
+                  location.pathname === "/me/orders" ? "active" : ""
+                }`}
+                to="/me/orders"
+              >
                 Orders
               </Link>
-              <Link className="dropdown-item" to="/me/profile">
+              <Link
+                className={`dropdown-item ${
+                  location.pathname === "/me/profile" ? "active" : ""
+                }`}
+                to="/me/profile"
+              >
                 Profile
               </Link>
               <Link
