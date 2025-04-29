@@ -1,10 +1,96 @@
 import React from "react";
-
 import AdminLayout from "../layout/AdminLayout";
+import { useState } from "react";
 
-// User Layout & Show User Profile
-const Dashboard = ({ children }) => {
-  return <AdminLayout />;
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+
+import SalesChart from "../charts/SalesCharts";
+
+const Dashboard = () => {
+  const [startDate, setStartDate] = useState(new Date().setDate(1));
+  const [endDate, setEndDate] = useState(new Date());
+  return (
+    <AdminLayout>
+      {/* Date Filter */}
+      <div className="d-flex justify-content-start align-items-center">
+        <div className="mb-3 me-4">
+          <label className="form-label d-block">Start Date</label>
+          <DatePicker
+            value={startDate}
+            onChange={setStartDate}
+            className="form-control"
+          />
+          <style>
+            {`
+  .date-picker-inline-style .react-date-picker__wrapper {
+    border: none !important;
+    box-shadow: none;
+  }
+`}
+          </style>
+        </div>
+        <div className="mb-3">
+          <label className="form-label d-block">End Date</label>
+          <DatePicker
+            value={endDate}
+            onChange={setEndDate}
+            className="form-control"
+          />
+          <style>
+            {`
+  .date-picker-inline-style .react-date-picker__wrapper {
+    border: none !important;
+    box-shadow: none;
+  }
+`}
+          </style>
+        </div>
+        <button
+          className="btn ms-4 mt-3 px-5"
+          style={{
+            color: "#f90",
+            backgroundColor: "#fff",
+            border: "2px solid #f90",
+          }}
+        >
+          Fetch
+        </button>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="row pr-4 my-5">
+        <div className="col-xl-6 col-sm-12 mb-3">
+          <div className="card text-white bg-success o-hidden h-100">
+            <div className="card-body">
+              <div className="text-center card-font-size">
+                Sales
+                <br />
+                <b>$0.00</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-xl-6 col-sm-12 mb-3">
+          <div className="card text-white bg-danger o-hidden h-100">
+            <div className="card-body">
+              <div className="text-center card-font-size">
+                Orders
+                <br />
+                <b>0</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <SalesChart />
+
+      <div className="mb-5"></div>
+    </AdminLayout>
+  );
 };
 
 export default Dashboard;
