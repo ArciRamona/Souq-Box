@@ -1,5 +1,6 @@
 // Handle Orders Resource
 // Create Order Model
+import { log } from "console";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import Order from "../models/order.js";
 import Product from "../models/products.js";
@@ -143,5 +144,132 @@ export const getMyOrders = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     orders,
+  });
+});
+
+// async function getSalesData(startDate, endDate) {
+//   const salesData = await Order.aggregate([
+//     {
+//       // Stage 1 = Filter results
+//       $match: {
+//         createdAt: {
+//           $gte: new Date(startDate),
+//           $lte: new Date(endDate),
+//         },
+//       },
+//     },
+//     {
+//       // Stage 2 - Group Data
+//       $group: {
+//         _id: {
+//           date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+//         },
+//         totalSales: { $sum: "$totalAmount" },
+//         numOrder: { $sum: 1 }, // count the number of orders
+//       },
+//     },
+//   ]);
+//   console.log(salesData);
+// }
+
+async function getSalesData(startDate, endDate) {
+  return await Order.aggregate([
+    {
+      // Stage 1 = Filter results
+      $match: {
+        createdAt: {
+          $gte: new Date(startDate),
+          $lte: new Date(endDate),
+        },
+      },
+    },
+    {
+      // Stage 2 - Group Data
+      $group: {
+        _id: {
+          date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        },
+        totalSales: { $sum: "$totalAmount" },
+        numOrder: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { "_id.date": 1 },
+    },
+  ]);
+}
+
+function generateDateRange(start, end) {
+  const dates = [];
+  const current = new Date(start);
+  current.setUTCHours(0, 0, 0, 0);
+
+  while (current <= end) {
+    dates.push(new Date(current));
+    current.setUTCDate(current.getUTCDate() + 1); // increment 1 day
+  }
+  return dates;
+}
+
+// Get Sales Data => /api/v1/admin/get_sales
+export const getSales = catchAsyncErrors(async (req, res, next) => {
+  const startDate = new Date(req.query.startDate);
+  const endDate = new Date(req.query.endDate);
+
+  startDate.setUTCHours(0, 0, 0, 0);
+  endDate.setUTCHours(23, 59, 59, 999);
+
+  // 1. Query raw sales data
+  const salesData = await Order.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        },
+        totalSales: { $sum: "$totalAmount" },
+        numOrder: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { "_id.date": 1 },
+    },
+  ]);
+
+  // 2. Create a map from sales data
+  const salesMap = new Map();
+  salesData.forEach((entry) => {
+    salesMap.set(entry._id.date, {
+      totalSales: entry.totalSales,
+      numOrder: entry.numOrder,
+    });
+  });
+
+  // 3. Generate complete date range
+  const allDates = generateDateRange(startDate, endDate);
+
+  // 4. Fill missing days with 0
+  const finalSales = allDates.map((date) => {
+    const formatted = date.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+    return {
+      date: formatted,
+      totalSales: salesMap.get(formatted)?.totalSales || 0,
+      numOrder: salesMap.get(formatted)?.numOrder || 0,
+    };
+  });
+
+  // 5. Send it
+  res.status(200).json({
+    success: true,
+    sales: finalSales,
+    totalSales: finalSales.reduce((acc, curr) => acc + curr.totalSales, 0),
+    totalNumOrders: finalSales.reduce((acc, curr) => acc + curr.numOrder, 0),
   });
 });
