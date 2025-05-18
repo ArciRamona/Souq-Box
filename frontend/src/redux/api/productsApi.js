@@ -9,7 +9,7 @@ export const productApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1", // We set up our proxy value that is going to be our backend domain, like localhost port 3004 and now we can use in here /api/v1/products and then that will fetch the data from the backend. So we have to set in here the proxy field in order to connect our application with the backend. So now we have set in here the proxy value that is our localhost port 3004.
   }),
-  tagTypes: ["Product"], // Tagging the product and if edit the review no need to reload to appear it will automatically paste into your product review
+  tagTypes: ["Product", "AdminProducts"], // Tagging the product and if edit the review no need to reload to appear it will automatically paste into your product review
   keepUnusedDataFor: 30,
 
   // Define all the endpoints here.
@@ -53,6 +53,22 @@ export const productApi = createApi({
     canUserReview: builder.query({
       query: (productId) => `/can_review/?productId=${productId}`,
     }),
+
+    getAdminProducts: builder.query({
+      query: () => `/admin/products`,
+      providesTags: ["AdminProducts"],
+    }),
+
+    createProduct: builder.mutation({
+      query(body) {
+        return {
+          url: "/admin/products", // TODO Seet the routes products.js if same spelling
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags: ["AdminProducts"],
+    }),
   }),
 });
 
@@ -61,4 +77,6 @@ export const {
   useGetProductDetailsQuery,
   useSumbitReviewMutation,
   useCanUserReviewQuery,
+  useGetAdminProductsQuery,
+  useCreateProductMutation,
 } = productApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.

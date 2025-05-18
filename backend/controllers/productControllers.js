@@ -222,3 +222,12 @@ export const canUserReview = catchAsyncErrors(async (req, res, next) => {
   {
   }
 });
+
+// Get products - ADMIN => /api/v1/admin/products
+export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+  const products = await Product.find();
+
+  res.status(200).json({
+    products,
+  });
+});

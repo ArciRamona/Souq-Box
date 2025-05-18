@@ -12,6 +12,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 
 import SalesChart from "../charts/SalesCharts";
+import MetaData from "../layout/MetaData";
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState(() => {
@@ -59,6 +60,7 @@ const Dashboard = () => {
 
   return (
     <AdminLayout>
+      <MetaData title="Admin Dashboard" />
       {/* Date Filter */}
       <div className="d-flex justify-content-start align-items-center">
         <div className="mb-3 me-4">

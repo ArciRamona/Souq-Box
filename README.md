@@ -171,8 +171,8 @@ Built with ❤️ by Gladys Ando Doroin
 “Tech meets creativity — for smarter online shopping.”
 
     •	✉️ Email: gbav.business@gmail.com
-    •	🌐 Portfolio: Gladys Doroin Portfolio
-    •	💼 LinkedIn: Gladys Ando
+    •	🌐 Portfolio: gladys-doroin-portfolio.vercel.app
+    •	💼 LinkedIn: www.linkedin.com/in/gladys-ando-b73257251
 
 ⸻
 
