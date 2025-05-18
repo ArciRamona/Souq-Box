@@ -68,7 +68,7 @@ export const getProductDetails = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-//Update product details => /api/v1/products/:id
+// Update product details => /api/v1/products/:id
 export const updateProduct = catchAsyncErrors(async (req, res) => {
   let product = await Product.findById(req?.params?.id); //Optional Chaining Operator
 
@@ -231,3 +231,35 @@ export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
     products,
   });
 });
+
+//Update product details => /api/v1/products/:id
+// export const updateProduct = catchAsyncErrors(async (req, res, next) => {
+//   let product = await Product.findById(req?.params?.id);
+
+//   if (!product) {
+//     return next(new ErrorHandler("Product not found", 400));
+//   }
+
+//   const { name, description, price, category, stock, seller } = req.body;
+
+//   if (!name || !description || !price || !category || !stock || !seller) {
+//     return next(
+//       new ErrorHandler("Please enter all required fields for the product", 400)
+//     );
+//   }
+
+//   product = await Product.findByIdAndUpdate(
+//     req?.params?.id,
+//     {
+//       name,
+//       description,
+//       price,
+//       category,
+//       stock,
+//       seller,
+//     },
+//     { new: true, runValidators: true }
+//   );
+
+//   res.status(200).json({ product });
+// });

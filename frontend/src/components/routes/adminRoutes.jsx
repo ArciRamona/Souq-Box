@@ -8,6 +8,7 @@ import AdminProducts from "../admin/Products";
 import ListProducts from "../admin/ListProducts";
 import UploadProductImages from "../admin/UploadProductImages.jsx";
 import NewProduct from "../admin/NewProduct.jsx";
+import UpdateProuct from "../admin/UpdateProducts.jsx";
 
 const adminRoutes = [
   <Route
@@ -54,6 +55,15 @@ const adminRoutes = [
     element={
       <ProtectedRoute adminOnly={true}>
         <NewProduct />
+      </ProtectedRoute>
+    }
+  />,
+
+  <Route
+    path="/admin/products/:id"
+    element={
+      <ProtectedRoute adminOnly={true}>
+        <UpdateProuct />
       </ProtectedRoute>
     }
   />,

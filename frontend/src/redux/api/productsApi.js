@@ -69,6 +69,17 @@ export const productApi = createApi({
       },
       invalidatesTags: ["AdminProducts"],
     }),
+
+    updateProduct: builder.mutation({
+      query({ id, body }) {
+        return {
+          url: `/admin/products/${id}`, // TODO Seet the routes products.js if same spelling
+          method: "PUT",
+          body,
+        };
+      },
+      invalidatesTags: ["AdminProducts", "Product"],
+    }),
   }),
 });
 
@@ -79,4 +90,5 @@ export const {
   useCanUserReviewQuery,
   useGetAdminProductsQuery,
   useCreateProductMutation,
+  useUpdateProductMutation,
 } = productApi; // With this Mutation object in this hook we can use in our component that will give us all the products, the Isloading variable success, variable error variable, every variable that we need.
