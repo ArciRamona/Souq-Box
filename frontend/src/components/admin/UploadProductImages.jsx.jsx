@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 // import axios from "axios";
 import toast from "react-hot-toast";
+import { useUploadProductImagesMutation } from "../../redux/api/productsApi";
 
 const UploadProductImages = () => {
   const { id: productId } = useParams();
   const [images, setImages] = useState([]);
+
+  const [uploadProductImages] = useUploadProductImagesMutation();
+
   const [uploading, setUploading] = useState(false);
 
   const handleImageChange = (e) => {
@@ -21,22 +25,12 @@ const UploadProductImages = () => {
       const formData = new FormData();
       images.forEach((image) => formData.append("images", image));
 
-      // const {} = await axios.put(
-      //   `/api/v1/admin/products/${productId}/upload_images`,
-      //   formData,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       // Add Authorization if needed:
-      //       // Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
+      await uploadProductImages({ productId, body: formData }).unwrap();
 
       toast.success("Images uploaded successfully");
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || "Image upload failed ❌");
+      toast.error(error?.data?.message || "Image upload failed ❌");
     } finally {
       setUploading(false);
     }

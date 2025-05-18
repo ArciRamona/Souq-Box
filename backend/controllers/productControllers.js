@@ -8,6 +8,7 @@ import ErrorHandler from "../utils/errorHandlers.js";
 import Order from "../models/order.js";
 
 import mongoose from "mongoose";
+import { upload_file } from "../utils/cloudinary.js";
 
 //Create a new product => /api/v1/products
 export const getProducts = catchAsyncErrors(async (req, res, next) => {
@@ -82,6 +83,27 @@ export const updateProduct = catchAsyncErrors(async (req, res) => {
   product = await Product.findByIdAndUpdate(req?.params?.id, req.body, {
     new: true,
   }); //New to true means that it will return back the product document or the product object that is new that is updated version
+
+  res.status(200).json({
+    product,
+  });
+});
+
+// Upload Product Images => /api/v1/admin/products/:id/upload_images
+export const uploadProductImages = catchAsyncErrors(async (req, res) => {
+  let product = await Product.findById(req?.params?.id); //Optional Chaining Operator
+
+  if (!product) {
+    return next(new ErrorHandler("Product not found, 400"));
+  }
+
+  const uploader = async (image) => upload_file(image, "");
+
+  const urls = await Promise.all(req?.body?.images.map(uploader));
+
+  product?.images?.push(...urls); // Push the product
+
+  await product?.save();
 
   res.status(200).json({
     product,
